@@ -1,6 +1,8 @@
-package com.Revature.app.Registration;
+package com.Revature.app.daos;
 
 import java.util.Optional;
+
+import com.Revature.app.models.User;
 
 public class RegistrationDAO {
     

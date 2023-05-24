@@ -1,4 +1,4 @@
-package com.Revature.app.Registration;
+package com.Revature.app.models;
 
 import java.util.UUID;
 
