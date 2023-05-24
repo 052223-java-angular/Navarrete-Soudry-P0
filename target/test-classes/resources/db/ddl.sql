@@ -5,32 +5,34 @@ DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
 
 CREATE TABLE users (
-    userid VARCHAR(Max) PRIMARY KEY,
+    userid VARCHAR(255) PRIMARY KEY,
     username VARCHAR(100) NOT NULL,
-    password VARCHAR(100) UNIQUE,
+    password VARCHAR(100) UNIQUE
 );
 
 CREATE TABLE account (
-    id VARCHAR(Max) PRIMARY KEY,
-    FOREIGN KEY (user_id) References users (userid)
+    id VARCHAR(255) PRIMARY KEY,
+    user_id VARCHAR(255) REFERENCES users (userid)
 );
 
 CREATE TABLE cart (
-    id VARCHAR(Max) PRIMARY KEY,
-    FOREIGN KEY (account_id) References account (id),
-    FOREIGN KEY (product_id) VARCHAR(100) UNIQUE,
-);
-
-CREATE TABLE orderHistory (
-    id VARCHAR(Max) PRIMARY KEY,
-    date DATE NOT NULL,
-    FOREIGN KEY (product_id) References products (name),
-    FOREIGN KEY(account_id) References account(id)
+    id VARCHAR(255) PRIMARY KEY,
+    account_id VARCHAR(255) REFERENCES account (id),
+    product_id VARCHAR(100) UNIQUE
 );
 
 CREATE TABLE products (
-    name VARCHAR(Max) PRIMARY KEY,
+    name VARCHAR(255) PRIMARY KEY,
     category VARCHAR(100) NOT NULL,
-    price Decimal NOT NULL,
+    price DECIMAL NOT NULL,
     rating INT NOT NULL
 );
+
+CREATE TABLE orderHistory (
+    id VARCHAR(255) PRIMARY KEY,
+    date DATE NOT NULL,
+    product_id VARCHAR(255) REFERENCES products (name),
+    account_id VARCHAR(255) REFERENCES account (id)
+);
+
+
