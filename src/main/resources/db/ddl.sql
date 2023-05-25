@@ -5,14 +5,14 @@ DROP TABLE IF EXISTS users CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
 
 CREATE TABLE users (
-    userid VARCHAR(255) PRIMARY KEY,
+    id VARCHAR(255) PRIMARY KEY,
     username VARCHAR(100) NOT NULL,
     password VARCHAR(100) UNIQUE
 );
 
 CREATE TABLE account (
     id VARCHAR(255) PRIMARY KEY,
-    user_id VARCHAR(255) REFERENCES users (userid)
+    user_id VARCHAR(255) REFERENCES users (id)
 );
 
 CREATE TABLE cart (
