@@ -21,7 +21,7 @@ public class RegistrationScreen implements IScreen {
         username = getUsername(scan, username);
         password = getPassword(scan, username, password);
 
-        service.register(username, password);
+        service.Register(username, password);
     }
 
     /* ------------ Helper Methods --------------- */

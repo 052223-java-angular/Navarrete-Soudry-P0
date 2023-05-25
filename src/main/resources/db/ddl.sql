@@ -33,6 +33,15 @@ CREATE TABLE products (
     FOREIGN KEY (category_id) REFERENCES categories(id)
 );
 
+CREATE TABLE cart_product (
+    id VARCHAR PRIMARY KEY,
+    cart_id VARCHAR NOT NULL,
+    product_id VARCHAR NOT NULL,
+    amount INTEGER NOT NULL,
+    FOREIGN KEY (cart_id) REFERENCES carts(id),
+    FOREIGN KEY (product_id) VARCHAR REFERENCES products(id)
+)
+
 CREATE TABLE reviews (
     id VARCHAR PRIMARY KEY,
     rating INTEGER NOT NULL,

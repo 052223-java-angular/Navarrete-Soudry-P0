@@ -54,12 +54,13 @@ public class LoginScreen implements IScreen {
                             scan.nextLine();
                             break;
                         }
-                        System.out
-                                .println("Login successful\nUser: " + "\nPress enter to continue...");
+                        System.out.println("\nLogin successful!");
+                        System.out.print("Press enter to continue...");
                         scan.nextLine();
                         // create session
 
                         // navigate to product page
+                        router.navigate("/cart", scan);
                         break exit;
                     case "n":
                         clearScreen();

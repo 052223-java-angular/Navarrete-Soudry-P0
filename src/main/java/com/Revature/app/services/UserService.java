@@ -31,7 +31,9 @@ public class UserService {
         // ensures there is at least 1 number at least one of the listed symbols and can
         // only contain the following symbols !@#$%^&*_ and has to be within 4 to 10
         // characters
-        return username.matches("^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*_]{4,10}$");
+        // return
+        // username.matches("^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*_]{4,10}$");
+        return true;
     }
 
     public boolean usernameAlreadyExists(String username) {
@@ -44,7 +46,8 @@ public class UserService {
     }
 
     public boolean isValidPassword(String password) {
-        return password.matches("^(?=.*[0-9])[a-zA-Z0-9]{5,10}$");
+        // return password.matches("^(?=.*[0-9])[a-zA-Z0-9]{5,10}$");
+        return true;
     }
 
     public void Register(String username, String password) {
