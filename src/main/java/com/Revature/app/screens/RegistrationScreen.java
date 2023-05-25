@@ -13,13 +13,15 @@ public class RegistrationScreen implements IScreen {
 
     @Override
     public void start(Scanner scan) {
-        // TODO Auto-generated method stub
+  
         clearScreen();
         System.out.println("Thank you for selecting Registration");
         String username = "";
         String password = "";
         username = getUsername(scan, username);
-        password = getPassword(scan, password);
+        password = getPassword(scan, username, password);
+
+        service.Register(username, password);
     }
 
         /* ------------ Helper Methods --------------- */
@@ -38,7 +40,7 @@ public class RegistrationScreen implements IScreen {
                 }
     
                 if (!service.isValidUsername(s1)) {
-                    System.out.println("Username needs to be 8-20 characters long.");
+                    System.out.println("Your username needs to be between 4 and 10 characters, and it must contain at least 1 number at least one of the listed symbols and can only contain letters, numbers, and the following characters. !@#$%^&*_ .");
                     System.out.print("\nPress enter to continue...");
                     scan.nextLine();
                     continue;
@@ -55,12 +57,18 @@ public class RegistrationScreen implements IScreen {
             return s1;
         }
 
-        private String getPassword(Scanner scan,  String s2) {
+        private String getPassword(Scanner scan, String s1,  String s2) {
             while (true) {
                 System.out.print("\nEnter a password (x to cancel): ");
                 s2 = scan.nextLine();
                 if (s2.equalsIgnoreCase("x")) {
                     return "x";
+                }
+                if (!service.isValidPassword(s1)) {
+                    System.out.println("Password must be 5-10 characters long and contain at least number in it");
+                    System.out.print("\nPress enter to continue...");
+                    scan.nextLine();
+                    continue;
                 }
                 break;
             }
