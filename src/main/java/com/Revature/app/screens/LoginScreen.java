@@ -3,6 +3,7 @@ package com.Revature.app.screens;
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.Revature.app.models.Session;
 import com.Revature.app.models.User;
 import com.Revature.app.services.RouterService;
 import com.Revature.app.services.UserService;
@@ -13,6 +14,7 @@ import lombok.AllArgsConstructor;
 public class LoginScreen implements IScreen {
     private UserService userService;
     private RouterService router;
+    private Session session;
 
     @Override
     public void start(Scanner scan) {
@@ -58,9 +60,10 @@ public class LoginScreen implements IScreen {
                         System.out.print("Press enter to continue...");
                         scan.nextLine();
                         // create session
+                        session.setSession(foundUser.get());
+                        // navigate to menu screen
 
-                        // navigate to product page
-                        router.navigate("/cart", scan);
+                        router.navigate("/cart", scan); // testing cart screen
                         break exit;
                     case "n":
                         clearScreen();
