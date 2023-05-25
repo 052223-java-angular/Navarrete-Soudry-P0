@@ -23,24 +23,19 @@ public class UserService {
         return userOpt;
     }
 
-    public boolean isValidUsername(String username) {
-        // username must be 8 - 20 characters long
-        // no _ or . at the beginning
-        // no _ or _. or ._ or .. inside
-        // no _ or . at the end
-        // allowed characters: a-zA-Z0-9._
-        return username.matches("^(?=[a-zA-Z0-9._]{8,20}$)(?!.*[_.]{2})[^_.].*[^_.]$");
+    public User register(String username, String password) {
+        return null;
     }
 
-    public boolean isValidPassword(String password) {
+    public boolean isValidUsername(String username) {
         // ensures there is at least 1 number at least one of the listed symbols and can
         // only contain the following symbols !@#$%^&*_ and has to be within 4 to 10
         // characters
-        return password.matches("^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*_]{4,10}$");
+        return username.matches("^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*_]{4,10}$");
     }
 
     public boolean usernameAlreadyExists(String username) {
-        Optional<User> userOpt = userDao.findByUsername(username);
+        Optional<String> userOpt = userDao.searchByUserName(username);
 
         if (userOpt.isEmpty()) {
             return true;
@@ -48,8 +43,15 @@ public class UserService {
         return false;
     }
 
-    // public String Hashing(String Password) {
+    public boolean isValidPassword(String password) {
+        return password.matches("^(?=.*[0-9])[a-zA-Z0-9]{5,10}$");
+    }
 
-    // }
+    public void Register(String username, String password) {
+        String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
+        User newUser = new User(username, hashed);
+        userDao.registerUser(newUser);
+        System.out.println(newUser);
+    }
 
 }

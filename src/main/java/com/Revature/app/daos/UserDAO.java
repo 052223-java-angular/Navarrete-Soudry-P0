@@ -12,6 +12,35 @@ import com.Revature.app.models.User;
 import com.Revature.app.utils.ConnectionFactory;
 
 public class UserDAO implements CrudDAO<User> {
+    @Override
+    public void save(User obj) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'save'");
+    }
+
+    @Override
+    public void update(String id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'update'");
+    }
+
+    @Override
+    public void delete(String id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+    }
+
+    @Override
+    public User findById(String id) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findById'");
+    }
+
+    @Override
+    public List<User> findAll() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+    }
 
     public Optional<User> findByUsername(String username) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
@@ -42,33 +71,53 @@ public class UserDAO implements CrudDAO<User> {
         return Optional.empty();
     }
 
-    @Override
-    public void save(User obj) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
+    public void registerUser(User obj) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+
+            String sql = "INSERT INTO users (id, username, password, role_id) VALUES (?, ?, ?, ?)";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, obj.getId());
+                ps.setString(2, obj.getUsername());
+                ps.setString(3, obj.getPassword());
+                ps.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
     }
 
-    @Override
-    public void update(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
-    }
+    public Optional<String> searchByUserName(String username) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            System.out.println("The conn " + conn);
+            String sql = "SELECT * FROM users WHERE username = ?";
 
-    @Override
-    public void delete(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
-    }
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, username);
 
-    @Override
-    public User findById(String id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findById'");
-    }
+                try (ResultSet rs = ps.executeQuery()) {
+                    if (rs.next()) {
+                        String value = rs.getString("username");
+                        return Optional.of(value);
+                    }
+                }
+            }
 
-    @Override
-    public List<User> findAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findAll'");
+        } catch (SQLException e) {
+            throw new RuntimeException(e
+            // "Unable to connect to db"
+            );
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+
+        return Optional.empty();
     }
 }
