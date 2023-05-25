@@ -19,10 +19,9 @@ public class User {
     private String password;
     private String roleId;
 
-    public User(String username, String password, String roleId) {
+    public User(String username, String password) {
         this.id = UUID.randomUUID().toString();
         this.username = username;
         this.password = password;
-        this.roleId = roleId;
     }
 }
