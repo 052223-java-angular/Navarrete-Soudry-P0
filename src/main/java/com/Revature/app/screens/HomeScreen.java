@@ -16,7 +16,7 @@ public class HomeScreen implements IScreen {
 
         exit: {
             while (true) {
-                clearScreen();
+                // clearScreen();
                 System.out.println("Welcome to the app!");
                 System.out.println("\n[1] Login screen");
                 System.out.println("[2] register screen");

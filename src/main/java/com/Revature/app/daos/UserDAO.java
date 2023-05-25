@@ -43,6 +43,7 @@ public class UserDAO implements CrudDAO<User> {
     }
 
     public Optional<User> findByUsername(String username) {
+        System.out.println("You reached the Dao find by Username");
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "SELECT * FROM users WHERE username = ?";
 
@@ -72,9 +73,10 @@ public class UserDAO implements CrudDAO<User> {
     }
 
     public void registerUser(User obj) {
+        System.out.println("You reached the Dao register");
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-
-            String sql = "INSERT INTO users (id, username, password, role_id) VALUES (?, ?, ?, ?)";
+            System.out.println(obj);
+            String sql = "INSERT INTO users (userid, username, password) VALUES (?, ?, ?)";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, obj.getId());
@@ -84,7 +86,7 @@ public class UserDAO implements CrudDAO<User> {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException("Unable to connect to db");
+            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException("Cannot find application.properties");
         } catch (ClassNotFoundException e) {
@@ -93,6 +95,7 @@ public class UserDAO implements CrudDAO<User> {
     }
 
     public Optional<String> searchByUserName(String username) {
+        System.out.println("You reached the Dao searchbyUsername");
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             System.out.println("The conn " + conn);
             String sql = "SELECT * FROM users WHERE username = ?";
