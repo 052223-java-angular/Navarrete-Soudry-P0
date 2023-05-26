@@ -105,4 +105,43 @@ public class CartDAO implements CrudDAO<Cart> {
             throw new RuntimeException("Unable to load jdbc");
         }
     }
+
+    public void deleteCart(String cartId) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String sql = "DELETE FROM carts WHERE id = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, cartId);
+
+                ps.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            throw new RuntimeException("Unable to connect to db");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+    }
+
+    public void deleteCartItem(String cartItemId) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String sql = "DELETE FROM cart_items WHERE id = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, cartItemId);
+
+                ps.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+    }
 }

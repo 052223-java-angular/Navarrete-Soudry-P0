@@ -25,4 +25,16 @@ public class CartService {
         List<CartItem> cartItems = cartDao.findAllCartItemsByCartId(cartId);
         return cartItems;
     }
+
+    public void deleteCart(String cartId) {
+        cartDao.deleteCart(cartId);
+    }
+
+    public void deleteCartItem(String cartItemId) {
+        cartDao.deleteCartItem(cartItemId);
+    }
+
+    public void updateCartItem(CartItem cartItem) {
+
+    }
 }
