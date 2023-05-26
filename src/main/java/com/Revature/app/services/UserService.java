@@ -23,8 +23,9 @@ public class UserService {
         return userOpt;
     }
 
-    public User register(String username, String password) {
-        return null;
+    public void register(String username, String password) {
+        User user = new User(username, password);
+        userDao.registerUser(user);
     }
 
     public boolean isValidUsername(String username) {

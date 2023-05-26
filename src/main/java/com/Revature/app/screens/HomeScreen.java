@@ -16,7 +16,7 @@ public class HomeScreen implements IScreen {
 
         exit: {
             while (true) {
-                // clearScreen();
+                clearScreen();
                 System.out.println("Welcome to the app!");
                 System.out.println("\n[1] Login screen");
                 System.out.println("[2] register screen");
@@ -25,7 +25,7 @@ public class HomeScreen implements IScreen {
 
                 System.out.print("\nEnter: ");
                 input = scan.nextLine();
-
+                clearScreen();
                 switch (input.toLowerCase()) {
                     case "1":
                         router.navigate("/login", scan);
@@ -41,8 +41,8 @@ public class HomeScreen implements IScreen {
                         break exit;
                     default:
                         // clearScreen();
-                        // System.out.println("Invalid option!");
-                        // System.out.print("\nPress enter to continue...");
+                        System.out.println("Invalid option!");
+                        System.out.print("\nPress enter to continue...");
                         scan.nextLine();
                         break;
                 }
@@ -54,8 +54,8 @@ public class HomeScreen implements IScreen {
      * ------------------------ Helper methods ------------------------------
      */
 
-    // private void clearScreen() {
-    //     System.out.print("\033[H\033[2J");
-    //     System.out.flush();
-    // }
+    private void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
 }
