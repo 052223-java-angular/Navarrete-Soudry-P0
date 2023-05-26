@@ -13,6 +13,14 @@ import lombok.AllArgsConstructor;
 public class CartService {
     private final CartDAO cartDao;
 
+    public void createCart(Cart cart) {
+        cartDao.createCart(cart);
+    }
+
+    public void createCartItem(CartItem cartItem) {
+        cartDao.createCartItem(cartItem);
+    }
+
     public Optional<Cart> findCartByUserId(String userId) {
         Optional<Cart> cartFound = cartDao.findCartByUserId(userId);
         if (cartFound.isEmpty()) {
