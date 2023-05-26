@@ -36,9 +36,10 @@ CREATE TABLE products (
 
 CREATE TABLE cart_items (
     id VARCHAR PRIMARY KEY,
+    quantity INTEGER NOT NULL,
+    price DECIMAL(10,2) NOT NULL,
     cart_id VARCHAR NOT NULL,
     product_id VARCHAR NOT NULL,
-    amount INTEGER NOT NULL,
     FOREIGN KEY (cart_id) REFERENCES carts(id),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
@@ -67,5 +68,6 @@ CREATE TABLE order_items (
     price DECIMAL(8, 2) NOT NULL,
     order_id VARCHAR NOT NULL,
     product_id VARCHAR NOT NULL,
-    FOREIGN KEY (order_id) REFERENCES orders(id)
+    FOREIGN KEY (order_id) REFERENCES orders(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
 );

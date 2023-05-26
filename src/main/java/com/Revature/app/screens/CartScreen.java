@@ -1,5 +1,6 @@
 package com.Revature.app.screens;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -97,7 +98,7 @@ public class CartScreen implements IScreen {
                             // chosen cart item
                             CartItem cartItem = cartItems.get(Integer.parseInt(itemOption) - 1);
                             // get new quantity
-                            itemQuantity = getQuantity(cartItem.getAmount(), cartItem.getStock(), scan);
+                            itemQuantity = getQuantity(cartItem.getQuantity(), cartItem.getStock(), scan);
                             if (itemQuantity.equals("x")) {
                                 continue;
                             }
@@ -127,8 +128,7 @@ public class CartScreen implements IScreen {
                                 break;
                             }
                             // update cart item
-                            cartItem.setAmount(quantity);
-                            cartService.updateCartItem(cartItem);
+                            updateCartItem(cartItem, quantity);
 
                             clearScreen();
                             System.out.println("Update successful");
@@ -138,8 +138,29 @@ public class CartScreen implements IScreen {
                         }
                         break;
                     case "3":
-                        // TODO: navigate to payment
-                        break exit;
+                        // checkout
+                        while (true) {
+                            clearScreen();
+                            System.out.println("Checking out...");
+                            showCartItems(cartItems);
+                            System.out.println("\n----------------------------------");
+                            System.out.println("\nTotal price: " + getCartPrice(cartItems));
+                            System.out.print("\nContinue with purchase (y/n): ");
+
+                            switch (scan.nextLine()) {
+                                case "y":
+                                    // create order
+                                    // add to order history
+                                    // process payment
+                                    break exit;
+                                case "n":
+                                    break;
+                                default:
+                                    continue;
+                            }
+                            break;
+                        }
+                        break;
                     case "x":
                         break exit;
                     default:
@@ -184,7 +205,7 @@ public class CartScreen implements IScreen {
     private void showCartItem(CartItem cartItem) {
         System.out.println("\nProduct: " + cartItem.getName());
         System.out.println("Price: " + cartItem.getPrice());
-        System.out.println("Amount: " + cartItem.getAmount());
+        System.out.println("Amount: " + cartItem.getQuantity());
     }
 
     private void showCartItems(List<CartItem> cartItems) {
@@ -205,7 +226,7 @@ public class CartScreen implements IScreen {
             for (CartItem cartItem : cartItems) {
                 System.out.println("\n    Product: " + cartItem.getName());
                 System.out.println("[" + choiceCounter++ + "] " + "Price: " + cartItem.getPrice());
-                System.out.println("    Amount: " + cartItem.getAmount());
+                System.out.println("    Amount: " + cartItem.getQuantity());
             }
             System.out.println("\n[x] Exit");
 
@@ -247,6 +268,24 @@ public class CartScreen implements IScreen {
             break;
         }
         return input;
+    }
+
+    private void updateCartItem(CartItem cartItem, int quantity) {
+        BigDecimal newPrice = cartItem.getPrice()
+                .divide(BigDecimal.valueOf(cartItem.getQuantity()))
+                .multiply(BigDecimal.valueOf(quantity));
+
+        cartItem.setPrice(newPrice);
+        cartItem.setQuantity(quantity);
+        cartService.updateCartItem(cartItem);
+    }
+
+    private BigDecimal getCartPrice(List<CartItem> cartItems) {
+        BigDecimal total = new BigDecimal(0.00);
+        for (CartItem cartItem : cartItems) {
+            total = total.add(cartItem.getPrice());
+        }
+        return total;
     }
 
     private boolean isValidNumber(String possibleNum) {

@@ -24,11 +24,11 @@ INSERT INTO products (id, name, description, price, stock, category_id) VALUES
     ('3', 'Table Lamp', 'Modern table lamp for ambient lighting', 49.99, 20, '3');
 
 -- Inserting data into the cart_product table
-INSERT INTO cart_items (id, cart_id, product_id, amount) VALUES
-    ('1', '1', '1', 1),
-    ('2', '2', '2', 1),
-    ('3', '3', '3', 1),
-    ('4', '1', '2', 2);
+INSERT INTO cart_items (id, quantity, price, cart_id, product_id) VALUES
+    ('1', 1, 199.99, '1', '1'),
+    ('2', 1, 19.99, '2', '2'),
+    ('3', 1, 49.99, '3', '3'),
+    ('4', 2, 39.98, '1', '2');
 
 -- Inserting data into the reviews table
 INSERT INTO reviews (id, rating, description, product_id, user_id) VALUES
@@ -46,6 +46,6 @@ INSERT INTO orders (id, created_at, total_cost, user_id) VALUES
 -- Inserting data into the order_items table
 INSERT INTO order_items (id, quantity, price, order_id, product_id) VALUES
     ('1', 1, 199.99, '1', '1'),
-    ('2', 2, 19.99, '1', '2'),
+    ('2', 2, 39.98, '1', '2'),
     ('3', 1, 19.99, '2', '2'),
     ('4', 1, 49.99, '3', '3');

@@ -41,7 +41,7 @@ public class CartDAO {
                 ps.setString(1, cartItem.getId());
                 ps.setString(2, cartItem.getCart_id());
                 ps.setString(3, cartItem.getProduct_id());
-                ps.setInt(4, cartItem.getAmount());
+                ps.setInt(4, cartItem.getQuantity());
                 ps.executeUpdate();
             }
 
@@ -84,9 +84,9 @@ public class CartDAO {
 
     public List<CartItem> findAllCartItemsByCartId(String cartId) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "SELECT cart_items.id, cart_items.amount, cart_items.cart_id, cart_items.product_id, " +
-                    "products.stock, products.name, products.price FROM cart_items INNER JOIN products " +
-                    "ON cart_items.product_id = products.id AND cart_items.cart_id = ?";
+            String sql = "SELECT cart_items.id, cart_items.quantity, cart_items.cart_id, cart_items.price, " +
+                    "cart_items.product_id, products.stock, products.name FROM cart_items " +
+                    "INNER JOIN products ON cart_items.product_id = products.id AND cart_items.cart_id = ?";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, cartId);
@@ -97,7 +97,7 @@ public class CartDAO {
                         CartItem cartItem = new CartItem();
                         cartItem.setId(rs.getString("id"));
                         cartItem.setStock(rs.getInt("stock"));
-                        cartItem.setAmount(rs.getInt("amount"));
+                        cartItem.setQuantity(rs.getInt("quantity"));
                         cartItem.setName(rs.getString("name"));
                         cartItem.setPrice(rs.getBigDecimal("price"));
                         cartItem.setCart_id(rs.getString("cart_id"));
@@ -158,16 +158,18 @@ public class CartDAO {
 
     public void updateCartItem(CartItem cartItem) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "UPDATE cart_items SET amount = ? WHERE id = ?";
+            String sql = "UPDATE cart_items SET quantity = ?, price = ? WHERE id = ?";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setInt(1, cartItem.getAmount());
-                ps.setString(2, cartItem.getId());
+                ps.setInt(1, cartItem.getQuantity());
+                ps.setBigDecimal(2, cartItem.getPrice());
+                ps.setString(3, cartItem.getId());
 
                 ps.executeUpdate();
             }
 
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException("Unable to connect to db");
         } catch (IOException e) {
             throw new RuntimeException("Cannot find application.properties");
