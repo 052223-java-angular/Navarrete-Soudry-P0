@@ -1,9 +1,9 @@
 -- Inserting data into the users table
 INSERT INTO users (id, username, password) VALUES
-    ('1', 'john', '$2a$10$9qwL0hmWM/lFMHMPq1KV0OIR0yLUD.7MYz8o65XKHBcwADHLAo6em'),
+    ('1', 'johnny', '$2a$10$9qwL0hmWM/lFMHMPq1KV0OIR0yLUD.7MYz8o65XKHBcwADHLAo6em'),
     ('2', 'alice', '$2a$10$9qwL0hmWM/lFMHMPq1KV0OIR0yLUD.7MYz8o65XKHBcwADHLAo6em'),
-    ('3', 'emma', '$2a$10$9qwL0hmWM/lFMHMPq1KV0OIR0yLUD.7MYz8o65XKHBcwADHLAo6em'),
-   	('4', 'mark', '$2a$10$9qwL0hmWM/lFMHMPq1KV0OIR0yLUD.7MYz8o65XKHBcwADHLAo6em');
+    ('3', 'tester123', '$2a$10$9qwL0hmWM/lFMHMPq1KV0OIR0yLUD.7MYz8o65XKHBcwADHLAo6em'),
+   	('4', 'manuel', '$2a$10$9qwL0hmWM/lFMHMPq1KV0OIR0yLUD.7MYz8o65XKHBcwADHLAo6em');
 
 -- Inserting data into the carts table
 INSERT INTO carts (id, user_id) VALUES
