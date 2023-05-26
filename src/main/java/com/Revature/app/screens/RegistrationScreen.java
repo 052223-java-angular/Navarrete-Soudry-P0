@@ -4,14 +4,14 @@ import java.util.Scanner;
 
 import com.Revature.app.services.UserService;
 
-// import com.Revature.app.services.RouterService;
+import com.Revature.app.services.RouterService;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class RegistrationScreen implements IScreen {
     public final UserService service;
-
-    public RegistrationScreen(UserService service) {
-        this.service = service;
-    }
+    public final RouterService router;
 
     @Override
     public void start(Scanner scan) {
@@ -25,8 +25,8 @@ public class RegistrationScreen implements IScreen {
 
         service.register(username, password);
         clearScreen();
-        // RouterService router = new RouterService();
-        // router.navigate("/mainApp", scan);
+       
+        router.navigate("/mainApp", scan);
     }
 
     /* ------------ Helper Methods --------------- */
@@ -70,12 +70,12 @@ public class RegistrationScreen implements IScreen {
             if (s2.equalsIgnoreCase("x")) {
                 return "x";
             }
-            if (!service.isValidPassword(s1)) {
-                System.out.println("Password must be 5-10 characters long and contain at least number in it");
-                System.out.print("\nPress enter to continue...");
-                scan.nextLine();
-                continue;
-            }
+            // if (!service.isValidPassword(s1)) {
+            //     System.out.println("Password must be 5-10 characters long and contain at least number in it");
+            //     System.out.print("\nPress enter to continue...");
+            //     scan.nextLine();
+            //     continue;
+            // }
             break;
         }
         return s2;

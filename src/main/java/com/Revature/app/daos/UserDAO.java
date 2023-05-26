@@ -72,9 +72,10 @@ public class UserDAO implements CrudDAO<User> {
     }
 
     public void registerUser(User obj) {
+        System.out.println(obj);
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
 
-            String sql = "INSERT INTO users (id, username, password, role_id) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO users (id, username, password) VALUES (?, ?, ?)";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, obj.getId());
