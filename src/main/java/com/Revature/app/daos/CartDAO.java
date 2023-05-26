@@ -14,6 +14,7 @@ import com.Revature.app.models.CartItem;
 import com.Revature.app.utils.ConnectionFactory;
 
 public class CartDAO {
+
     public void createCart(Cart cart) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "INSERT INTO carts (id, user_id) VALUES (?, ?)";
