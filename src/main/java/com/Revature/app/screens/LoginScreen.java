@@ -62,8 +62,7 @@ public class LoginScreen implements IScreen {
                         // create session
                         session.setSession(foundUser.get());
                         // navigate to menu screen
-
-                        router.navigate("/cart", scan); // testing cart screen
+                        router.navigate("/cart", scan); // TODO: replace
                         break exit;
                     case "n":
                         clearScreen();
