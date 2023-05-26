@@ -60,9 +60,8 @@ public class LoginScreen implements IScreen {
                         System.out.print("Press enter to continue...");
                         scan.nextLine();
                         // create session
-                        session.setSession(foundUser.get());
-                        // navigate to menu screen
-                        router.navigate("/cart", scan); // TODO: replace
+                        router.navigate("/mainApp", scan);
+                        // navigate to product page
                         break exit;
                     case "n":
                         clearScreen();

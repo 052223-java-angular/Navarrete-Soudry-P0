@@ -12,5 +12,4 @@ public class App {
         router.navigate("/home", scan);
         scan.close();
     }
-
 }

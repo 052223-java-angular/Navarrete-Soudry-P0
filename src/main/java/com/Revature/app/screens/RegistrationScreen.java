@@ -4,12 +4,14 @@ import java.util.Scanner;
 
 import com.Revature.app.services.UserService;
 
+import com.Revature.app.services.RouterService;
+
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class RegistrationScreen implements IScreen {
     public final UserService service;
-
-    public RegistrationScreen(UserService service) {
-        this.service = service;
-    }
+    public final RouterService router;
 
     @Override
     public void start(Scanner scan) {
@@ -22,6 +24,9 @@ public class RegistrationScreen implements IScreen {
         password = getPassword(scan, username, password);
 
         service.Register(username, password);
+        clearScreen();
+        System.out.println("Thank you for Registering");
+        router.navigate("/mainApp", scan);
     }
 
     /* ------------ Helper Methods --------------- */
@@ -41,7 +46,7 @@ public class RegistrationScreen implements IScreen {
 
             if (!service.isValidUsername(s1)) {
                 System.out.println(
-                        "Your username needs to be between 4 and 10 characters, and it must contain at least 1 number at least one of the listed symbols and can only contain letters, numbers, and the following characters. !@#$%^&*_ .");
+                        "Your username needs to be between 5 to 10 characters long.");
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
                 continue;
@@ -65,8 +70,8 @@ public class RegistrationScreen implements IScreen {
             if (s2.equalsIgnoreCase("x")) {
                 return "x";
             }
-            if (!service.isValidPassword(s1)) {
-                System.out.println("Password must be 5-10 characters long and contain at least number in it");
+            if (!service.isValidPassword(s2)) {
+                System.out.println("Your password needs to be between 5 to 10 characters long and contain at least 1 number.");
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
                 continue;
