@@ -42,6 +42,7 @@ public class RouterService {
 
     private CartService getCartService() {
         return new CartService(new CartDAO());
+    }
 
     private ProductsService gerProductsService() {
         return new ProductsService(new ProductDAO());

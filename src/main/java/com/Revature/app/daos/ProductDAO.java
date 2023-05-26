@@ -17,7 +17,7 @@ public class ProductDAO {
         System.out.println("Made it to Dao");
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "SELECT * FROM products WHERE stock > 0";
-            try (PreparedStatement ps = conn.prepareStatement(sql)) {  
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 List<Product> p1 = new ArrayList<>();
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
@@ -25,11 +25,11 @@ public class ProductDAO {
                         product.setId(rs.getString("id"));
                         product.setName(rs.getString("name"));
                         product.setDescription(rs.getString("description"));
-                        product.setPrice(rs.getFloat("price"));
+                        product.setPrice(rs.getBigDecimal("price"));
                         product.setStock(rs.getInt("stock"));
                         product.setCategory_id(rs.getString("category_id"));
-                        p1.add(product);      
-                    }  
+                        p1.add(product);
+                    }
                     return Optional.of(p1);
                 }
             }
@@ -41,61 +41,62 @@ public class ProductDAO {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Unable to load jdbc");
         }
-}
-    public Optional<List<Product>> grabAllProductBy(Float low, Float High) {
-    try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-        String sql = "SELECT * FROM products WHERE price >= ? AND price <= ?";
-        try (PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setFloat(1, low);
-            ps.setFloat(2, High);        
-            List<Product> p1 = new ArrayList<>();
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Product product = new Product();
-                    product.setId(rs.getString("id"));
-                    product.setName(rs.getString("name"));
-                    product.setDescription(rs.getString("description"));
-                    product.setPrice(rs.getFloat("price"));
-                    product.setStock(rs.getInt("stock"));
-                    product.setCategory_id(rs.getString("category_id"));
-                    p1.add(product);
-                }
-                return Optional.of(p1);
-            }
-        }
-
-    } catch (SQLException e) {
-        throw new RuntimeException(e);
-    } catch (IOException e) {
-        throw new RuntimeException("Cannot find application.properties");
-    } catch (ClassNotFoundException e) {
-        throw new RuntimeException("Unable to load jdbc");
     }
-}
 
-    public Optional<List<Product>> searchByCategory(String qualifier) {
+    public Optional<List<Product>> grabAllProductBy(Float low, Float High) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "SELECT products.*, categories.name FROM products, categories WHERE products.category_id = categories.id AND categories.name = ?;";
-    
+            String sql = "SELECT * FROM products WHERE price >= ? AND price <= ?";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setString(1, qualifier);
-              
+                ps.setFloat(1, low);
+                ps.setFloat(2, High);
                 List<Product> p1 = new ArrayList<>();
                 try (ResultSet rs = ps.executeQuery()) {
-                    while(rs.next()) {
-                        Product product = new Product(); 
+                    while (rs.next()) {
+                        Product product = new Product();
                         product.setId(rs.getString("id"));
                         product.setName(rs.getString("name"));
                         product.setDescription(rs.getString("description"));
-                        product.setPrice(rs.getFloat("price"));
+                        product.setPrice(rs.getBigDecimal("price"));
                         product.setStock(rs.getInt("stock"));
                         product.setCategory_id(rs.getString("category_id"));
-                        p1.add(product);  
+                        p1.add(product);
                     }
                     return Optional.of(p1);
                 }
             }
-    
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+    }
+
+    public Optional<List<Product>> searchByCategory(String qualifier) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String sql = "SELECT products.*, categories.name FROM products, categories WHERE products.category_id = categories.id AND categories.name = ?;";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, qualifier);
+
+                List<Product> p1 = new ArrayList<>();
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        Product product = new Product();
+                        product.setId(rs.getString("id"));
+                        product.setName(rs.getString("name"));
+                        product.setDescription(rs.getString("description"));
+                        product.setPrice(rs.getBigDecimal("price"));
+                        product.setStock(rs.getInt("stock"));
+                        product.setCategory_id(rs.getString("category_id"));
+                        p1.add(product);
+                    }
+                    return Optional.of(p1);
+                }
+            }
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {
@@ -109,19 +110,19 @@ public class ProductDAO {
     public Optional<List<Product>> searchByName(String qualifier) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "SELECT * FROM products WHERE name = ? OR name LIKE '%?%'";
-    
+
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, qualifier);
-              
+
                 List<Product> p1 = new ArrayList<>();
                 try (ResultSet rs = ps.executeQuery()) {
                     if (rs.next()) {
-    
+
                         Product product = new Product();
                         product.setId(rs.getString("id"));
                         product.setName(rs.getString("name"));
                         product.setDescription(rs.getString("description"));
-                        product.setPrice(rs.getFloat("price"));
+                        product.setPrice(rs.getBigDecimal("price"));
                         product.setStock(rs.getInt("stock"));
                         product.setCategory_id(rs.getString("category_id"));
                         p1.add(product);

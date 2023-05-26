@@ -60,8 +60,9 @@ public class LoginScreen implements IScreen {
                         System.out.print("Press enter to continue...");
                         scan.nextLine();
                         // create session
+                        session.setSession(foundUser.get());
+                        // navigate to main screen
                         router.navigate("/mainApp", scan);
-                        // navigate to product page
                         break exit;
                     case "n":
                         clearScreen();
@@ -94,7 +95,7 @@ public class LoginScreen implements IScreen {
 
             if (!userService.isValidUsername(username)) {
                 clearScreen();
-                System.out.println("Username needs to be 4-10 characters long.");
+                System.out.println("Username needs to be 5-10 characters long.");
                 System.out.print("\nPress enter to continue...");
                 scan.nextLine();
                 continue;
