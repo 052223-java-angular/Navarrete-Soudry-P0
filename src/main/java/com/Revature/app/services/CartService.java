@@ -35,6 +35,6 @@ public class CartService {
     }
 
     public void updateCartItem(CartItem cartItem) {
-
+        cartDao.updateCartItem(cartItem);
     }
 }

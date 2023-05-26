@@ -15,7 +15,7 @@ import lombok.ToString;
 @ToString
 public class CartItem {
     private String id;
-    private String cart_id;
+    private int stock;
     private String name;
     private BigDecimal price;
     private int amount;

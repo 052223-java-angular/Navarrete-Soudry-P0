@@ -33,7 +33,6 @@ public class CartScreen implements IScreen {
             // cart screen
             // get cart items
             List<CartItem> cartItems = cartService.findAllCartItemsByCartId(cartFound.get().getId());
-            String input = "";
             while (true) {
                 clearScreen();
                 // intro
@@ -42,74 +41,104 @@ public class CartScreen implements IScreen {
                 // display products in cart
                 showCartItems(cartItems);
                 // options
-                System.out.println("\n[1] Edit cart");
-                System.out.println("[2] Proceed to payment");
-                System.out.println("[x] Exit");
+                System.out.println("\n[1] Remove item");
+                System.out.println("[2] Change item quantity");
+                System.out.println("[3] Proceed to payment");
+                System.out.println("[x] Go back");
 
                 System.out.print("\nChoose an option: ");
+                String itemOption = "";
+                String itemQuantity = "";
                 switch (scan.nextLine()) {
                     case "1":
                         while (true) {
                             // edit cart
                             // choose which item to edit
                             // option is validated to be an int and in range of cartItems
-                            input = getItemOption(cartItems, scan);
-                            if (input.equals("x")) {
+                            itemOption = getItemOption("Removing item", cartItems, scan);
+                            if (itemOption.equals("x")) {
                                 break;
                             }
 
                             // chosen cart item
-                            CartItem cartItem = cartItems.get(Integer.parseInt(input) - 1);
-                            editItem: {
-                                while (true) {
-                                    // edit cart item
-                                    clearScreen();
-                                    // intro
-                                    System.out.println("Editing item...");
-                                    // display item to edit
-                                    showCartItem(cartItem);
-                                    // options
-                                    System.out.println("\n[1] Remove item from cart");
-                                    System.out.println("[2] Change amount");
-                                    System.out.println("[x] Exit");
+                            CartItem cartItem = cartItems.get(Integer.parseInt(itemOption) - 1);
+                            // delete cart item
+                            cartService.deleteCartItem(cartItem.getId());
+                            cartItems.remove(Integer.parseInt(itemOption) - 1);
 
-                                    System.out.print("\nChoose an option: ");
-                                    switch (scan.nextLine()) {
-                                        case "1":
-                                            // delete cart item
-                                            cartService.deleteCartItem(cartItem.getId());
-                                            cartItems.remove(Integer.parseInt(input) - 1);
-                                            // success
-                                            System.out.println("\nRemove successful");
-                                            System.out.print("\nPress enter to continue...");
-                                            scan.nextLine();
-                                            // delete cart
-                                            if (cartItems.isEmpty()) {
-                                                cartService.deleteCart(cartFound.get().getId());
-                                                cartFound = Optional.empty();
-                                                // show empty cart screen
-                                                cartIsEmptyScreen(scan);
-                                                // leave cart screen
-                                                break exit;
-                                            }
-                                            // go back to cart edit screen
-                                            break editItem;
-                                        case "2":
-                                            // TODO getAmount()
-                                            System.out.print("\nEnter new amount: ");
-                                            // int amount = getAmount(scan);
-                                            break;
-                                        case "x":
-                                            break editItem;
-                                        default:
-                                            break;
-                                    }
-                                }
+                            // success removal
+                            clearScreen();
+                            System.out.println("Removal successful");
+                            System.out.print("\nPress enter to continue...");
+                            scan.nextLine();
+
+                            // delete cart
+                            if (cartItems.isEmpty()) {
+                                cartService.deleteCart(cartFound.get().getId());
+                                cartFound = Optional.empty();
+                                // show empty cart screen
+                                cartIsEmptyScreen(scan);
+                                // leave cart screen
+                                break exit;
                             }
+                            break;
                         }
                         break;
                     case "2":
-                        // navigate to payment screen
+                        while (true) {
+
+                            // edit cart
+                            // choose item to edit
+                            itemOption = getItemOption("Changing quantity...", cartItems, scan);
+                            if (itemOption.equals("x")) {
+                                break;
+                            }
+
+                            // chosen cart item
+                            CartItem cartItem = cartItems.get(Integer.parseInt(itemOption) - 1);
+                            // get new quantity
+                            itemQuantity = getQuantity(cartItem.getAmount(), cartItem.getStock(), scan);
+                            if (itemQuantity.equals("x")) {
+                                continue;
+                            }
+
+                            int quantity = Integer.parseInt(itemQuantity);
+                            // delete item
+                            if (quantity == 0) {
+                                // delete cart item
+                                cartService.deleteCartItem(cartItem.getId());
+                                cartItems.remove(Integer.parseInt(itemOption) - 1);
+
+                                // success removal
+                                clearScreen();
+                                System.out.println("Removal successful");
+                                System.out.print("\nPress enter to continue...");
+                                scan.nextLine();
+
+                                // delete cart
+                                if (cartItems.isEmpty()) {
+                                    cartService.deleteCart(cartFound.get().getId());
+                                    cartFound = Optional.empty();
+                                    // show empty cart screen
+                                    cartIsEmptyScreen(scan);
+                                    // leave cart screen
+                                    break exit;
+                                }
+                                break;
+                            }
+                            // update cart item
+                            cartItem.setAmount(quantity);
+                            cartService.updateCartItem(cartItem);
+
+                            clearScreen();
+                            System.out.println("Update successful");
+                            System.out.print("\nPress enter to continue...");
+                            scan.nextLine();
+                            break;
+                        }
+                        break;
+                    case "3":
+                        // TODO: navigate to payment
                         break exit;
                     case "x":
                         break exit;
@@ -135,7 +164,7 @@ public class CartScreen implements IScreen {
                         "!");
                 System.out.println("\nYou currently have nothing in your cart...");
                 System.out.println("\n[1] Continue shopping");
-                System.out.println("[x] Exit");
+                System.out.println("[x] Go back");
 
                 System.out.print("\nChoose an option: ");
                 switch (scan.nextLine()) {
@@ -165,11 +194,11 @@ public class CartScreen implements IScreen {
         }
     }
 
-    private String getItemOption(List<CartItem> cartItems, Scanner scan) {
+    private String getItemOption(String title, List<CartItem> cartItems, Scanner scan) {
         String input = "";
         while (true) {
             clearScreen();
-            System.out.println("Editing cart...");
+            System.out.println(title);
 
             // loop through cart items
             int choiceCounter = 1;
@@ -192,6 +221,32 @@ public class CartScreen implements IScreen {
 
             return input;
         }
+    }
+
+    private String getQuantity(int amount, int stock, Scanner scan) {
+        String input = "";
+        while (true) {
+            clearScreen();
+            System.out.println("Changing quantity...");
+            System.out.println("\n- Current stock   : " + stock);
+            System.out.println("- Current quantity: " + amount);
+            System.out.print("\nEnter new quantity (x to cancel): ");
+
+            input = scan.nextLine();
+            if (input.equalsIgnoreCase("x")) {
+                return "x";
+            }
+            // validate
+            if (!isValidNumber(input) || Integer.parseInt(input) > stock || Integer.parseInt(input) < 0) {
+                clearScreen();
+                System.out.println("Input is invalid: must be a number between 0 and " + stock);
+                System.out.print("\nEnter to continue...");
+                scan.nextLine();
+                continue;
+            }
+            break;
+        }
+        return input;
     }
 
     private boolean isValidNumber(String possibleNum) {

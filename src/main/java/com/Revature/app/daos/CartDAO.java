@@ -75,9 +75,9 @@ public class CartDAO implements CrudDAO<Cart> {
 
     public List<CartItem> findAllCartItemsByCartId(String cartId) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "SELECT cart_items.id, cart_items.cart_id, cart_items.amount, " +
-                    "products.name, products.price FROM cart_items, products " +
-                    "WHERE cart_items.product_id = products.id AND cart_items.cart_id = ?";
+            String sql = "SELECT cart_items.id, cart_items.amount, products.stock, " +
+                    "products.name, products.price FROM cart_items INNER JOIN products " +
+                    "ON cart_items.product_id = products.id AND cart_items.cart_id = ?";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, cartId);
@@ -87,7 +87,7 @@ public class CartDAO implements CrudDAO<Cart> {
                     while (rs.next()) {
                         CartItem cartItem = new CartItem();
                         cartItem.setId(rs.getString("id"));
-                        cartItem.setCart_id(rs.getString("cart_id"));
+                        cartItem.setStock(rs.getInt("stock"));
                         cartItem.setAmount(rs.getInt("amount"));
                         cartItem.setName(rs.getString("name"));
                         cartItem.setPrice(rs.getBigDecimal("price"));
@@ -98,6 +98,7 @@ public class CartDAO implements CrudDAO<Cart> {
             }
 
         } catch (SQLException e) {
+            System.out.println(e.getMessage());
             throw new RuntimeException("Unable to connect to db");
         } catch (IOException e) {
             throw new RuntimeException("Cannot find application.properties");
@@ -132,6 +133,26 @@ public class CartDAO implements CrudDAO<Cart> {
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, cartItemId);
+
+                ps.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+    }
+
+    public void updateCartItem(CartItem cartItem) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String sql = "UPDATE cart_items SET amount = ? WHERE id = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setInt(1, cartItem.getAmount());
+                ps.setString(2, cartItem.getId());
 
                 ps.executeUpdate();
             }
