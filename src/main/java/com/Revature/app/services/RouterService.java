@@ -2,10 +2,9 @@ package com.Revature.app.services;
 
 import java.util.Scanner;
 
+import com.Revature.app.daos.ProductDAO;
 import com.Revature.app.daos.UserDAO;
-import com.Revature.app.screens.HomeScreen;
-import com.Revature.app.screens.LoginScreen;
-import com.Revature.app.screens.RegistrationScreen;
+import com.Revature.app.screens.*;
 
 public class RouterService {
     public void navigate(String path, Scanner scan) {
@@ -19,6 +18,9 @@ public class RouterService {
             case "/register":
                 new RegistrationScreen(getUserService()).start(scan);
                 break;
+            case "/mainApp":
+                new MainScreen(gerProductsService()).start(scan);
+                break;
             default:
                 break;
         }
@@ -27,5 +29,9 @@ public class RouterService {
     /* ----------------- Helper Methods -------------------- */
     private UserService getUserService() {
         return new UserService(new UserDAO());
+    }
+
+    private ProductsService gerProductsService() {
+        return new ProductsService(new ProductDAO());
     }
 }
