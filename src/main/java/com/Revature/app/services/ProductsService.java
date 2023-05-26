@@ -64,6 +64,7 @@ public class ProductsService {
 
     private void printResult(List<Product> P) {
         clearScreen();
+        System.out.println("YOUR PRODUCTS!!!!!");
         for (Product product : P) {
             // Perform operations on each product
             System.out.println("ID: " + product.getId());
@@ -79,4 +80,5 @@ public class ProductsService {
 private void clearScreen() {
     System.out.print("\033[H\033[2J");
     System.out.flush();
-}}
+}
+}

@@ -19,7 +19,7 @@ public class RouterService {
                 new RegistrationScreen(getUserService(), this).start(scan);
                 break;
             case "/mainApp":
-                new MainScreen(gerProductsService()).start(scan);
+                new MainScreen(gerProductsService(), this).start(scan);
                 break;
             default:
                 break;

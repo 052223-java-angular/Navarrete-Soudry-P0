@@ -23,16 +23,10 @@ public class UserService {
         return userOpt;
     }
 
-    public void register(String username, String password) {
-        User user = new User(username, password);
-        userDao.registerUser(user);
-    }
 
     public boolean isValidUsername(String username) {
-        // ensures there is at least 1 number at least one of the listed symbols and can
-        // only contain the following symbols !@#$%^&*_ and has to be within 4 to 10
-        // characters
-        return username.matches("^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*_]{4,10}$");
+    //   It ensures the username needs to be 5-10 characters long
+        return username.matches("^\\w{5,10}$");
     }
 
     public boolean usernameAlreadyExists(String username) {
@@ -45,7 +39,9 @@ public class UserService {
     }
 
     public boolean isValidPassword(String password) {
-        return password.matches("^(?=.*[0-9])[a-zA-Z0-9]{5,10}$");
+            //   It ensures the username needs to be 5-10 characters long
+        return password.matches("^(?=.*\\d)[\\w!@#$%^&*]{5,10}$");
+
     }
 
     public void Register(String username, String password) {
