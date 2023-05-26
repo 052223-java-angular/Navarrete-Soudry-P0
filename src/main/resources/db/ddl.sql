@@ -1,6 +1,7 @@
 DROP TABLE IF EXISTS order_items CASCADE;
 DROP TABLE IF EXISTS orders CASCADE;
 DROP TABLE IF EXISTS reviews CASCADE;
+DROP TABLE IF EXISTS cart_items CASCADE;
 DROP TABLE IF EXISTS products CASCADE;
 DROP TABLE IF EXISTS categories CASCADE;
 DROP TABLE IF EXISTS carts CASCADE;
@@ -31,6 +32,15 @@ CREATE TABLE products (
     stock INTEGER NOT NULL,
     category_id VARCHAR NOT NULL,
     FOREIGN KEY (category_id) REFERENCES categories(id)
+);
+
+CREATE TABLE cart_items (
+    id VARCHAR PRIMARY KEY,
+    cart_id VARCHAR NOT NULL,
+    product_id VARCHAR NOT NULL,
+    amount INTEGER NOT NULL,
+    FOREIGN KEY (cart_id) REFERENCES carts(id),
+    FOREIGN KEY (product_id) REFERENCES products(id)
 );
 
 CREATE TABLE reviews (

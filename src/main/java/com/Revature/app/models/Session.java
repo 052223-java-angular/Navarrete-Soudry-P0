@@ -1,8 +1,5 @@
 package com.Revature.app.models;
 
-
-import java.math.BigDecimal;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,11 +11,12 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Product {
+public class Session {
     private String id;
-    private String name;
-    private String description;
-    private BigDecimal price;
-    private int stock;
-    private String category_id;
+    private String username;
+
+    public void setSession(User user) {
+        this.id = user.getId();
+        this.username = user.getUsername();
+    }
 }

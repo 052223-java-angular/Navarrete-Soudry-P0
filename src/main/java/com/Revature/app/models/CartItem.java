@@ -1,6 +1,5 @@
 package com.Revature.app.models;
 
-
 import java.math.BigDecimal;
 
 import lombok.AllArgsConstructor;
@@ -14,11 +13,10 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class Product {
+public class CartItem {
     private String id;
-    private String name;
-    private String description;
-    private BigDecimal price;
     private int stock;
-    private String category_id;
+    private String name;
+    private BigDecimal price;
+    private int amount;
 }

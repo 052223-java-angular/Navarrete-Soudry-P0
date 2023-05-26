@@ -2,18 +2,25 @@ package com.Revature.app.services;
 
 import java.util.Scanner;
 
+import com.Revature.app.daos.CartDAO;
+import com.Revature.app.models.Session;
 import com.Revature.app.daos.ProductDAO;
 import com.Revature.app.daos.UserDAO;
 import com.Revature.app.screens.*;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class RouterService {
+    private Session session;
+
     public void navigate(String path, Scanner scan) {
         switch (path) {
             case "/home":
                 new HomeScreen(this).start(scan);
                 break;
             case "/login":
-                new LoginScreen(getUserService(), this).start(scan);
+                new LoginScreen(getUserService(), this, session).start(scan);
                 break;
             case "/register":
                 new RegistrationScreen(getUserService(), this).start(scan);
@@ -21,6 +28,8 @@ public class RouterService {
             case "/mainApp":
                 new MainScreen(gerProductsService(), this).start(scan);
                 break;
+            case "/cart":
+                new CartScreen(getCartService(), this, session).start(scan);
             default:
                 break;
         }
@@ -30,6 +39,9 @@ public class RouterService {
     private UserService getUserService() {
         return new UserService(new UserDAO());
     }
+
+    private CartService getCartService() {
+        return new CartService(new CartDAO());
 
     private ProductsService gerProductsService() {
         return new ProductsService(new ProductDAO());
