@@ -24,7 +24,7 @@ public class HomeScreen implements IScreen {
 
                 System.out.print("\nEnter: ");
                 input = scan.nextLine();
-
+                clearScreen();
                 switch (input.toLowerCase()) {
                     case "1":
                         router.navigate("/login", scan);
@@ -34,7 +34,8 @@ public class HomeScreen implements IScreen {
                         break;
                     case "x":
                         System.out.println("\nGoodbye!");
-                        break exit;
+                        // Terminate program
+                        System.exit(0);
                     default:
                         clearScreen();
                         System.out.println("Invalid option!");
