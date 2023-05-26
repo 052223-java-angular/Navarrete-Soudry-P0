@@ -58,7 +58,7 @@ public class LoginScreen implements IScreen {
                                 .println("Login successful\nUser: " + "\nPress enter to continue...");
                         scan.nextLine();
                         // create session
-
+                        router.navigate("/mainApp", scan);
                         // navigate to product page
                         break exit;
                     case "n":

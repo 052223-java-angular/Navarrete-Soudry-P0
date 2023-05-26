@@ -20,7 +20,6 @@ public class HomeScreen implements IScreen {
                 System.out.println("Welcome to the app!");
                 System.out.println("\n[1] Login screen");
                 System.out.println("[2] register screen");
-                System.out.println("[3] fast-track-tomain");
                 System.out.println("[x] Exit");
 
                 System.out.print("\nEnter: ");
@@ -33,14 +32,12 @@ public class HomeScreen implements IScreen {
                     case "2":
                         router.navigate("/register", scan);
                         break;
-                    case "3":
-                        router.navigate("/mainApp", scan);
-                        break;
                     case "x":
                         System.out.println("\nGoodbye!");
-                        break exit;
+                        // Terminate program
+                        System.exit(0);
                     default:
-                        // clearScreen();
+                        clearScreen();
                         System.out.println("Invalid option!");
                         System.out.print("\nPress enter to continue...");
                         scan.nextLine();
