@@ -31,6 +31,8 @@ public class RouterService {
                 break;
             case "/cart":
                 new CartScreen(getCartService(), getOrderService(), this, session).start(scan);
+            case "/orders":
+                new OrderScreen(getOrderService(), this, session).start(scan);
             default:
                 break;
         }

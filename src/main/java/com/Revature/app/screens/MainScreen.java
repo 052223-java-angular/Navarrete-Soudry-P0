@@ -20,7 +20,8 @@ public class MainScreen implements IScreen {
         System.out.println("[2] Press 2 to search for items within a price range.");
         System.out.println("[3] Press 3 to search for items by category.");
         System.out.println("[4] Press 4 to go to cart");
-        System.out.println("[5] Log out.");
+        System.out.println("[5] Press 5 to go to orders");
+        System.out.println("[x] Log out.");
 
         System.out.print("\nEnter: ");
         String input = scan.nextLine();
@@ -61,6 +62,8 @@ public class MainScreen implements IScreen {
                 router.navigate("/cart", scan);
                 break;
             case "5":
+                router.navigate("/orders", scan);
+            case "x":
                 router.navigate("/home", scan);
                 break;
         }
