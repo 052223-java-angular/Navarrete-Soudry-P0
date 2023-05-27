@@ -46,6 +46,10 @@ public class CartService {
         cartDao.deleteCartItem(cartItemId);
     }
 
+    public void updateCart(Cart cart) {
+        cartDao.updateCart(cart);
+    }
+
     public void updateCartItem(CartItem cartItem) {
         cartDao.updateCartItem(cartItem);
     }

@@ -14,22 +14,20 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class CartItem {
+public class OrderItem {
     private String id;
     private String name;
-    private int stock;
     private int quantity;
     private BigDecimal price;
-    private String cart_id;
+    private String order_id;
     private String product_id;
 
-    public CartItem(CartItem cartItem) {
+    public OrderItem(OrderItem orderItem) {
         this.id = UUID.randomUUID().toString();
-        this.name = cartItem.getName();
-        this.stock = cartItem.getStock();
-        this.quantity = cartItem.getQuantity();
-        this.price = cartItem.getPrice();
-        this.cart_id = cartItem.getCart_id();
-        this.product_id = cartItem.getProduct_id();
+        this.name = orderItem.getId();
+        this.quantity = orderItem.getQuantity();
+        this.price = orderItem.getPrice();
+        this.order_id = orderItem.getOrder_id();
+        this.product_id = orderItem.getProduct_id();
     }
 }
