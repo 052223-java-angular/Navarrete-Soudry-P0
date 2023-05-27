@@ -1,5 +1,6 @@
 package com.Revature.app.screens;
 
+import com.Revature.app.services.CartService;
 import com.Revature.app.services.ProductsService;
 import com.Revature.app.services.RouterService;
 
@@ -17,6 +18,7 @@ import com.Revature.app.models.Review;
 public class MainScreen implements IScreen {
     private final ProductsService product;
     private final RouterService router;
+    private final CartService cart;
 
     @Override
     public void start(Scanner scan) {
@@ -90,35 +92,63 @@ public class MainScreen implements IScreen {
     }
 
     private void learnMoreAboutProducts(Scanner scan, Optional<List<Product>> p) {
-        System.out.println("do you see this");
         List<Product> P = new ArrayList<>(p.get());
         // P = new ArrayList<>();
-        for (int i = 0; i < P.size(); i++) {
-            // int v = i + 1;
-            System.out.println("Press " + i + " to get more info on " + P.get(i).getName());
-        }
-     
-        Integer choice = scan.nextInt();
-        printOutFinerDetails(choice, P);
-        // reset code
-        // scan.nextLine();
-    }
-    
-    private void printOutFinerDetails(Integer i, List<Product> P) {
-        String name = P.get(i).getName();
-        Optional<List<Review>> reviews = product.getReview(name);
-
-        System.out.println(P.get(i).getName());
-        System.out.println(P.get(i).getDescription());
-
-        if (reviews.isPresent()) {
-            List<Review> r2 = new ArrayList<>(reviews.get());
-            System.out.println("Rating");
-            for (Review rr : r2) {
-                System.out.print(rr.getRating() + " ");
-                System.out.println(rr.getDescription());
+        while (true) {
+            for (int i = 0; i < P.size(); i++) {
+                // int v = i + 1;
+                System.out.println("Press " + i + " to get more info on " + P.get(i).getName());
+            }
+            Integer value = P.size() + 1;
+            System.out.println("Press " + P.size() + " to purchase one of thise items.");
+            System.out.println("Press " + value + " to go back to the main menu");
+            Integer choice = scan.nextInt();
+            printOutFinerDetails(scan, choice, P);
+            System.out.println("This is choice " + choice + "this is size " + P.size());
+            if (choice > P.size()) {
+                System.out.println("This is inside " + choice);
+                break;
             }
         }
+    }
+    
+    private void printOutFinerDetails(Scanner scan, Integer i, List<Product> P) {
+        if (i.equals(P.size())) {
+            buyingMethod(scan, P.get(i));
+        } else if (i < P.size()) {
+            String name = P.get(i).getName();
+            Optional<List<Review>> reviews = product.getReview(name);
+    
+            System.out.println(P.get(i).getName());
+            System.out.println(P.get(i).getDescription());
+    
+            if (reviews.isPresent()) {
+                List<Review> r2 = new ArrayList<>(reviews.get());
+                System.out.println("Rating");
+                for (Review rr : r2) {
+                    System.out.print(rr.getRating() + " ");
+                    System.out.println(rr.getDescription());
+                }
+            }
+            System.out.println("Would you like to purchase this item? y/N");
+            scan.nextLine();
+            String value = scan.nextLine();
+            switch (value) {
+                case "y":
+                buyingMethod(scan, P.get(i));
+                break;
+                default:
+                System.out.println("Sending you back to view items");
+                break;
+            }
+        }
+    }
+
+    public void buyingMethod(Scanner scan, Product P) {
+        System.out.println("This is the code when you buyin.");
+// buying logic
+        System.out.println("Please hit enter");
+        scan.nextLine();
     }
 
     private void clearScreen() {
