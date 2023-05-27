@@ -15,6 +15,7 @@ CREATE TABLE users (
 
 CREATE TABLE carts (
     id VARCHAR PRIMARY KEY,
+    total_cost DECIMAL(10, 2) NOT NULL,
     user_id VARCHAR NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)
 );
@@ -56,7 +57,7 @@ CREATE TABLE reviews (
 
 CREATE TABLE orders (
     id VARCHAR PRIMARY KEY,
-    created_at TIMESTAMP NOT NULL,
+    created_at TIMESTAMP WITH TIME ZONE NOT NULL,
     total_cost DECIMAL(10, 2) NOT NULL,
     user_id VARCHAR NOT NULL,
     FOREIGN KEY (user_id) REFERENCES users(id)

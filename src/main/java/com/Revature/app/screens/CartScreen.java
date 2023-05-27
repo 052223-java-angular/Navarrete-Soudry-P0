@@ -1,6 +1,7 @@
 package com.Revature.app.screens;
 
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -8,8 +9,10 @@ import java.util.regex.Pattern;
 
 import com.Revature.app.models.Cart;
 import com.Revature.app.models.CartItem;
+import com.Revature.app.models.Order;
 import com.Revature.app.models.Session;
 import com.Revature.app.services.CartService;
+import com.Revature.app.services.OrderService;
 import com.Revature.app.services.RouterService;
 
 import lombok.AllArgsConstructor;
@@ -17,6 +20,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CartScreen implements IScreen {
     private final CartService cartService;
+    private final OrderService orderService;
     private final RouterService router;
     private Session session;
 
@@ -54,8 +58,7 @@ public class CartScreen implements IScreen {
                     case "1":
                         while (true) {
                             // edit cart
-                            // choose which item to edit
-                            // option is validated to be an int and in range of cartItems
+                            // choose item to edit
                             itemOption = getItemOption("Removing item", cartItems, scan);
                             if (itemOption.equals("x")) {
                                 break;
@@ -63,25 +66,28 @@ public class CartScreen implements IScreen {
 
                             // chosen cart item
                             CartItem cartItem = cartItems.get(Integer.parseInt(itemOption) - 1);
+
                             // delete cart item
                             cartService.deleteCartItem(cartItem.getId());
                             cartItems.remove(Integer.parseInt(itemOption) - 1);
+
+                            // show empty cart screen
+                            if (cartItems.isEmpty()) {
+                                cartIsEmptyScreen(scan);
+                                // leave cart screen
+                                break exit;
+                            }
+
+                            // update cart total_cost
+                            cartFound.get()
+                                    .setTotal_cost(cartFound.get().getTotal_cost().subtract(cartItem.getPrice()));
+                            cartService.updateCart(cartFound.get());
 
                             // success removal
                             clearScreen();
                             System.out.println("Removal successful");
                             System.out.print("\nPress enter to continue...");
                             scan.nextLine();
-
-                            // delete cart
-                            if (cartItems.isEmpty()) {
-                                cartService.deleteCart(cartFound.get().getId());
-                                cartFound = Optional.empty();
-                                // show empty cart screen
-                                cartIsEmptyScreen(scan);
-                                // leave cart screen
-                                break exit;
-                            }
                             break;
                         }
                         break;
@@ -110,25 +116,27 @@ public class CartScreen implements IScreen {
                                 cartService.deleteCartItem(cartItem.getId());
                                 cartItems.remove(Integer.parseInt(itemOption) - 1);
 
+                                // show empty cart screen
+                                if (cartItems.isEmpty()) {
+                                    cartIsEmptyScreen(scan);
+                                    // leave cart screen
+                                    break exit;
+                                }
+
                                 // success removal
                                 clearScreen();
                                 System.out.println("Removal successful");
                                 System.out.print("\nPress enter to continue...");
                                 scan.nextLine();
-
-                                // delete cart
-                                if (cartItems.isEmpty()) {
-                                    cartService.deleteCart(cartFound.get().getId());
-                                    cartFound = Optional.empty();
-                                    // show empty cart screen
-                                    cartIsEmptyScreen(scan);
-                                    // leave cart screen
-                                    break exit;
-                                }
                                 break;
                             }
                             // update cart item
                             updateCartItem(cartItem, quantity);
+
+                            // update cart total_cost
+                            cartFound.get()
+                                    .setTotal_cost(cartFound.get().getTotal_cost().subtract(cartItem.getPrice()));
+                            cartService.updateCart(cartFound.get());
 
                             clearScreen();
                             System.out.println("Update successful");
@@ -150,6 +158,7 @@ public class CartScreen implements IScreen {
                             switch (scan.nextLine()) {
                                 case "y":
                                     // create order
+                                    // add order items to order
                                     // add to order history
                                     // process payment
                                     break exit;

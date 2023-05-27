@@ -6,10 +6,10 @@ INSERT INTO users (id, username, password) VALUES
    	('4', 'manuel', '$2a$10$9qwL0hmWM/lFMHMPq1KV0OIR0yLUD.7MYz8o65XKHBcwADHLAo6em');
 
 -- Inserting data into the carts table
-INSERT INTO carts (id, user_id) VALUES
-    ('1', '1'),
-    ('2', '2'),
-    ('3', '3');
+INSERT INTO carts (id, total_cost, user_id) VALUES
+    ('1', 239.97, '1'),
+    ('2', 19.99, '2'),
+    ('3', 49.99, '3');
 
 -- Inserting data into the categories table
 INSERT INTO categories (id, name) VALUES
