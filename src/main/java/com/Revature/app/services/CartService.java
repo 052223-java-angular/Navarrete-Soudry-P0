@@ -13,6 +13,10 @@ import lombok.AllArgsConstructor;
 public class CartService {
     private final CartDAO cartDao;
 
+    public void genericCase() {
+        
+    }
+
     public void createCart(Cart cart) {
         cartDao.createCart(cart);
     }
