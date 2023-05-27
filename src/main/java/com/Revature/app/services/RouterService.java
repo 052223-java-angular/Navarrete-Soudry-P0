@@ -6,6 +6,7 @@ import com.Revature.app.daos.CartDAO;
 import com.Revature.app.daos.OrderDAO;
 import com.Revature.app.models.Session;
 import com.Revature.app.daos.ProductDAO;
+import com.Revature.app.daos.ReviewDAO;
 import com.Revature.app.daos.UserDAO;
 import com.Revature.app.screens.*;
 
@@ -27,7 +28,7 @@ public class RouterService {
                 new RegistrationScreen(getUserService(), this).start(scan);
                 break;
             case "/mainApp":
-                new MainScreen(gerProductsService(), this).start(scan);
+                new MainScreen(getProductsService(), this, getCartService()).start(scan);
                 break;
             case "/cart":
                 new CartScreen(getCartService(), getOrderService(), this, session).start(scan);
