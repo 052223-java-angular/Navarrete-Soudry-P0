@@ -8,7 +8,11 @@ import com.Revature.app.models.Order;
 import com.Revature.app.models.OrderItem;
 import com.Revature.app.models.Session;
 import com.Revature.app.services.OrderService;
+import com.Revature.app.services.ReviewService;
 import com.Revature.app.services.RouterService;
+
+import com.Revature.app.models.Review;
+
 
 import lombok.AllArgsConstructor;
 
@@ -17,6 +21,7 @@ public class OrderScreen implements IScreen {
     private final OrderService orderService;
     private final RouterService router;
     private Session session;
+    private final ReviewService reviewService;
 
     @Override
     public void start(Scanner scan) {
@@ -187,9 +192,29 @@ public class OrderScreen implements IScreen {
         /* TODO */
         while (true) {
             clearScreen();
-            System.out.println("welcome to review");
-            System.out.print("\nEnter to continue...");
+            System.out.println("\nWelcome to Review screen");
+         
+            System.out.println("What out of 5 would you rate this product");
+            Integer value = scan.nextInt();
             scan.nextLine();
+            System.out.println("Please describe your opinion of the product");
+            String value2 = scan.nextLine();
+
+            System.out.println("Please confirm your information is correct: " + orderItem.getName());
+            System.out.println("Rating " + value);
+            System.out.println("Description " + value2);
+            System.out.println("yes/No");
+            String value3 = scan.nextLine().toLowerCase();
+            if (value3.equals("yes")) {
+              
+                reviewService.sendAReview(new Review(value, value2, orderItem.getProduct_id(), session.getId()));
+                System.out.println("Your review has been submitted. Please hit enter to return to viewing your order.");
+                scan.nextLine();
+            } else {
+                    System.out.println("Scrapping your previous rating. Please hit enter and try again..");
+                    scan.nextLine();
+                    continue;
+            }
             break;
         }
     }

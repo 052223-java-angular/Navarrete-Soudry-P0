@@ -83,10 +83,7 @@ public class ProductsService {
        
     }
 
-    // public Optional<List<Review>> sendAReview(Review review) {
-    //     System.out.println("What out of 5 stars would you give this number?");
-    //     revDao.insertReview(review));
-    // }
+
 
 
        /*
