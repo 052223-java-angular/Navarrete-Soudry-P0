@@ -42,6 +42,29 @@ public class ReviewDAO {
             throw new RuntimeException("Unable to load jdbc");
         }
     }
+
+    public void insertReview(Review review) {
+    
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String sql = "INSERT INTO reviews (id, rating, description, product_id, user_id) VALUES (?, ?, ?, ?, ?)";
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, review.getId());
+                ps.setInt(2, review.getRating());
+                ps.setString(3, review.getDescription());
+                ps.setString(4, review.getProduct_id());
+                ps.setString(5, review.getUser_id());
+                ps.executeUpdate();
+            }
+    
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+    }
+    
 }
     
 
