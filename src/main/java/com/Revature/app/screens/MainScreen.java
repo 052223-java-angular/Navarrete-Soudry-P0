@@ -98,6 +98,22 @@ public class MainScreen implements IScreen {
         List<Product> P = new ArrayList<>(p.get());
         // P = new ArrayList<>();
         while (true) {
+
+            System.out.println("YOUR PRODUCTS!!!!!");
+            System.out.print("Name ");
+            System.out.print("Price ");
+            System.out.print("Stock ");
+            System.out.println("Category ");
+            for (Product product : P) {
+        
+                System.out.print(product.getName() + " " );
+                System.out.print(product.getPrice() + " " );
+                System.out.print(product.getStock() + " " );
+                System.out.println(product.getCategory_id() + " " );
+        }
+
+        System.out.println("");
+
             for (int i = 0; i < P.size(); i++) {
                 // int v = i + 1;
                 System.out.println("Press " + i + " to get more info on " + P.get(i).getName());
@@ -106,8 +122,9 @@ public class MainScreen implements IScreen {
             System.out.println("Press " + P.size() + " to purchase one of thise items.");
             System.out.println("Press " + value + " to go back to the main menu");
             Integer choice = scan.nextInt();
+            clearScreen();
             printOutFinerDetails(scan, choice, P);
-            System.out.println("This is choice " + choice + "this is size " + P.size());
+
             if (choice > P.size()) {
                 System.out.println("This is inside " + choice);
                 break;
@@ -115,33 +132,39 @@ public class MainScreen implements IScreen {
         }
     }
     
-    private void printOutFinerDetails(Scanner scan, Integer i, List<Product> P) {
-        if (i.equals(P.size())) {
-            buyingMethod(scan, P.get(i));
-        } else if (i < P.size()) {
-            String name = P.get(i).getName();
+    private void printOutFinerDetails(Scanner scan, Integer counter, List<Product> P) {
+        if (counter.equals(P.size())) {
+            for (int i = 0; i < P.size(); i++) {
+                // int v = i + 1;
+                System.out.println("Press " + i + " to buy " + P.get(i).getName());
+            }
+            Integer b = scan.nextInt();
+            buyingMethod(scan, P.get(b));
+        } else if (counter < P.size()) {
+            String name = P.get(counter).getName();
             Optional<List<Review>> reviews = product.getReview(name);
     
-            System.out.println(P.get(i).getName());
-            System.out.println(P.get(i).getDescription());
+            System.out.println(P.get(counter).getName());
+            System.out.println(P.get(counter).getDescription());
     
             if (reviews.isPresent()) {
                 List<Review> r2 = new ArrayList<>(reviews.get());
-                System.out.println("Rating");
+                System.out.println("Rating Rating Description");
                 for (Review rr : r2) {
                     System.out.print(rr.getRating() + " ");
                     System.out.println(rr.getDescription());
                 }
             }
+            System.out.println("");
             System.out.println("Would you like to purchase this item? y/N");
             scan.nextLine();
             String value = scan.nextLine();
             switch (value) {
                 case "y":
-                buyingMethod(scan, P.get(i));
+                buyingMethod(scan, P.get(counter));
                 break;
                 default:
-                System.out.println("Sending you back to view items");
+                clearScreen();
                 break;
             }
         }
