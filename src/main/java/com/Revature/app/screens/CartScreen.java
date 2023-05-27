@@ -3,13 +3,13 @@ package com.Revature.app.screens;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
 import com.Revature.app.models.Cart;
 import com.Revature.app.models.CartItem;
 import com.Revature.app.models.Order;
+import com.Revature.app.models.OrderItem;
 import com.Revature.app.models.Session;
 import com.Revature.app.services.CartService;
 import com.Revature.app.services.OrderService;
@@ -26,64 +26,60 @@ public class CartScreen implements IScreen {
 
     @Override
     public void start(Scanner scan) {
-        // find cart
-        Optional<Cart> cartFound = cartService.findCartByUserId(session.getId());
+        Cart cart = cartService.findCartByUserId(session.getId());
+        List<CartItem> cartItems = cartService.findAllCartItemsByCartId(cart.getId());
+        String itemOption = "";
+        String itemQuantity = "";
         exit: {
             // empty cart screen
-            if (cartFound.isEmpty()) {
+            if (cartItems.isEmpty()) {
                 cartIsEmptyScreen(scan);
                 break exit;
             }
 
             // cart screen
-            // get cart items
-            List<CartItem> cartItems = cartService.findAllCartItemsByCartId(cartFound.get().getId());
             while (true) {
                 clearScreen();
-                // intro
                 System.out.println("Welcome to the cart " + session.getUsername() +
                         "!");
-                // display products in cart
+
+                // show cart items
                 showCartItems(cartItems);
                 // options
                 System.out.println("\n[1] Remove item");
                 System.out.println("[2] Change item quantity");
-                System.out.println("[3] Proceed to payment");
+                System.out.println("[3] Proceed to checkout");
                 System.out.println("[x] Go back");
 
+                // get option
                 System.out.print("\nChoose an option: ");
-                String itemOption = "";
-                String itemQuantity = "";
                 switch (scan.nextLine()) {
                     case "1":
                         while (true) {
-                            // edit cart
-                            // choose item to edit
-                            itemOption = getItemOption("Removing item", cartItems, scan);
+                            // get cart item option
+                            itemOption = getCartItemOption(cartItems, scan);
                             if (itemOption.equals("x")) {
                                 break;
                             }
 
-                            // chosen cart item
                             CartItem cartItem = cartItems.get(Integer.parseInt(itemOption) - 1);
+
+                            // update cart
+                            cart.setTotal_cost(cart.getTotal_cost().subtract(cartItem.getPrice()));
+                            cartService.updateCart(cart);
 
                             // delete cart item
                             cartService.deleteCartItem(cartItem.getId());
-                            cartItems.remove(Integer.parseInt(itemOption) - 1);
+                            cartItems.remove(cartItem);
 
-                            // show empty cart screen
+                            // empty cart screen
                             if (cartItems.isEmpty()) {
                                 cartIsEmptyScreen(scan);
                                 // leave cart screen
                                 break exit;
                             }
 
-                            // update cart total_cost
-                            cartFound.get()
-                                    .setTotal_cost(cartFound.get().getTotal_cost().subtract(cartItem.getPrice()));
-                            cartService.updateCart(cartFound.get());
-
-                            // success removal
+                            // successful removal
                             clearScreen();
                             System.out.println("Removal successful");
                             System.out.print("\nPress enter to continue...");
@@ -93,28 +89,34 @@ public class CartScreen implements IScreen {
                         break;
                     case "2":
                         while (true) {
-
-                            // edit cart
-                            // choose item to edit
-                            itemOption = getItemOption("Changing quantity...", cartItems, scan);
+                            // get cart item option
+                            itemOption = getCartItemOption(cartItems, scan);
                             if (itemOption.equals("x")) {
                                 break;
                             }
 
-                            // chosen cart item
                             CartItem cartItem = cartItems.get(Integer.parseInt(itemOption) - 1);
+
                             // get new quantity
                             itemQuantity = getQuantity(cartItem.getQuantity(), cartItem.getStock(), scan);
                             if (itemQuantity.equals("x")) {
                                 continue;
                             }
 
-                            int quantity = Integer.parseInt(itemQuantity);
-                            // delete item
-                            if (quantity == 0) {
+                            if (Integer.parseInt(itemQuantity) == 0) {
+                                // update cart
+                                cart.setTotal_cost(cart.getTotal_cost().subtract(cartItem.getPrice()));
+                                cartService.updateCart(cart);
+
                                 // delete cart item
                                 cartService.deleteCartItem(cartItem.getId());
-                                cartItems.remove(Integer.parseInt(itemOption) - 1);
+                                cartItems.remove(cartItem);
+
+                                // success removal
+                                clearScreen();
+                                System.out.println("Removal successful");
+                                System.out.print("\nPress enter to continue...");
+                                scan.nextLine();
 
                                 // show empty cart screen
                                 if (cartItems.isEmpty()) {
@@ -123,20 +125,11 @@ public class CartScreen implements IScreen {
                                     break exit;
                                 }
 
-                                // success removal
-                                clearScreen();
-                                System.out.println("Removal successful");
-                                System.out.print("\nPress enter to continue...");
-                                scan.nextLine();
                                 break;
                             }
-                            // update cart item
-                            updateCartItem(cartItem, quantity);
 
-                            // update cart total_cost
-                            cartFound.get()
-                                    .setTotal_cost(cartFound.get().getTotal_cost().subtract(cartItem.getPrice()));
-                            cartService.updateCart(cartFound.get());
+                            // update cart and cart item
+                            updateCartAndCartItem(cart, cartItem, Integer.parseInt(itemQuantity));
 
                             clearScreen();
                             System.out.println("Update successful");
@@ -151,16 +144,29 @@ public class CartScreen implements IScreen {
                             clearScreen();
                             System.out.println("Checking out...");
                             showCartItems(cartItems);
-                            System.out.println("\n----------------------------------");
-                            System.out.println("\nTotal price: " + getCartPrice(cartItems));
+                            System.out.println("\n------------------------------------------------------------------");
+                            System.out.println("\nTotal price: " + cart.getTotal_cost());
                             System.out.print("\nContinue with purchase (y/n): ");
 
                             switch (scan.nextLine()) {
                                 case "y":
                                     // create order
-                                    // add order items to order
-                                    // add to order history
+                                    Order order = new Order(OffsetDateTime.now(), cart.getTotal_cost(),
+                                            session.getId());
+                                    orderService.createOrder(order);
+
+                                    // create order items and remove cart items
+                                    createOrderItemsAndRemoveCartItems(cartItems, order.getId());
+
+                                    // update cart
+                                    cart.setTotal_cost(BigDecimal.valueOf(0));
+                                    cartService.updateCart(cart);
+
                                     // process payment
+                                    clearScreen();
+                                    System.out.println("Your order was processed successfully!");
+                                    System.out.print("\nEnter to continue...");
+                                    scan.nextLine();
                                     break exit;
                                 case "n":
                                     break;
@@ -211,41 +217,43 @@ public class CartScreen implements IScreen {
         }
     }
 
-    private void showCartItem(CartItem cartItem) {
-        System.out.println("\nProduct: " + cartItem.getName());
-        System.out.println("Price: " + cartItem.getPrice());
-        System.out.println("Amount: " + cartItem.getQuantity());
-    }
-
     private void showCartItems(List<CartItem> cartItems) {
         // loop through cart items
         for (CartItem cartItem : cartItems) {
-            showCartItem(cartItem);
+            System.out.println("\n" +
+                    cartItem.getName() + " - Price: $" + cartItem.getPrice() + " Quantity: " + cartItem.getQuantity());
         }
     }
 
-    private String getItemOption(String title, List<CartItem> cartItems, Scanner scan) {
+    private void showCartItemOptions(List<CartItem> cartItems) {
+        int counter = 1;
+        for (CartItem cartItem : cartItems) {
+            System.out.println("\n[" + counter + "] " + cartItem.getName() + " - Price: $" + cartItem.getPrice()
+                    + " Quantity: " + cartItem.getQuantity());
+            counter += 1;
+        }
+    }
+
+    private String getCartItemOption(List<CartItem> cartItems, Scanner scan) {
         String input = "";
         while (true) {
             clearScreen();
-            System.out.println(title);
+            System.out.println("Choosing cart item...");
 
-            // loop through cart items
-            int choiceCounter = 1;
-            for (CartItem cartItem : cartItems) {
-                System.out.println("\n    Product: " + cartItem.getName());
-                System.out.println("[" + choiceCounter++ + "] " + "Price: " + cartItem.getPrice());
-                System.out.println("    Amount: " + cartItem.getQuantity());
-            }
-            System.out.println("\n[x] Exit");
+            // show cart item options
+            showCartItemOptions(cartItems);
 
-            System.out.print("\nChoose an option: ");
+            System.out.print("\nChoose an option (x to cancel): ");
 
             input = scan.nextLine();
             if (input.equalsIgnoreCase("x")) {
                 return "x";
             } else if (!isValidNumber(input) || Integer.parseInt(input) > cartItems.size() ||
                     Integer.parseInt(input) < 1) {
+                clearScreen();
+                System.out.println("Input is invalid: must be a number between 1 and " + cartItems.size());
+                System.out.print("\nEnter to continue...");
+                scan.nextLine();
                 continue;
             }
 
@@ -279,22 +287,31 @@ public class CartScreen implements IScreen {
         return input;
     }
 
-    private void updateCartItem(CartItem cartItem, int quantity) {
+    private void updateCartAndCartItem(Cart cart, CartItem cartItem, int quantity) {
         BigDecimal newPrice = cartItem.getPrice()
                 .divide(BigDecimal.valueOf(cartItem.getQuantity()))
                 .multiply(BigDecimal.valueOf(quantity));
 
+        // update cart
+        cart.setTotal_cost(cart.getTotal_cost().add(newPrice.subtract(cartItem.getPrice())));
+        cartService.updateCart(cart);
+
+        // update cart item
         cartItem.setPrice(newPrice);
         cartItem.setQuantity(quantity);
         cartService.updateCartItem(cartItem);
     }
 
-    private BigDecimal getCartPrice(List<CartItem> cartItems) {
-        BigDecimal total = new BigDecimal(0.00);
+    public void createOrderItemsAndRemoveCartItems(List<CartItem> cartItems, String orderId) {
         for (CartItem cartItem : cartItems) {
-            total = total.add(cartItem.getPrice());
+            // create order item
+            OrderItem orderItem = new OrderItem(cartItem.getName(), cartItem.getQuantity(), cartItem.getPrice(),
+                    orderId, cartItem.getProduct_id());
+            orderService.createOrderItem(orderItem);
+
+            // delete cart item
+            cartService.deleteCartItem(cartItem.getId());
         }
-        return total;
     }
 
     private boolean isValidNumber(String possibleNum) {

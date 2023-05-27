@@ -58,7 +58,7 @@ public class CartDAO {
         }
     }
 
-    public Optional<Cart> findCartByUserId(String userId) {
+    public Cart findCartByUserId(String userId) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "SELECT * FROM carts WHERE user_id = ?";
 
@@ -66,13 +66,13 @@ public class CartDAO {
                 ps.setString(1, userId);
 
                 try (ResultSet rs = ps.executeQuery()) {
+                    Cart cart = new Cart();
                     if (rs.next()) {
-                        Cart cart = new Cart();
                         cart.setId(rs.getString("id"));
                         cart.setTotal_cost(rs.getBigDecimal("total_cost"));
                         cart.setUser_id(rs.getString("user_id"));
-                        return Optional.of(cart);
                     }
+                    return cart;
                 }
             }
 
@@ -83,8 +83,6 @@ public class CartDAO {
         } catch (ClassNotFoundException e) {
             throw new RuntimeException("Unable to load jdbc");
         }
-
-        return Optional.empty();
     }
 
     public List<CartItem> findAllCartItemsByCartId(String cartId) {

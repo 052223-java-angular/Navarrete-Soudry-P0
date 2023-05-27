@@ -13,7 +13,6 @@ import com.Revature.app.services.RouterService;
 
 import com.Revature.app.models.Review;
 
-
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -47,7 +46,7 @@ public class OrderScreen implements IScreen {
                         while (true) {
                             clearScreen();
                             // get order option
-                            orderOption = getOrderOption("Choosing order...", orders, scan);
+                            orderOption = getOrderOption(orders, scan);
                             if (orderOption.equals("x")) {
                                 break;
                             }
@@ -70,7 +69,7 @@ public class OrderScreen implements IScreen {
                                 switch (scan.nextLine()) {
                                     case "1":
                                         // get order item option
-                                        orderItemOption = getOrderItemOption("Choosing item...", orderItems, scan);
+                                        orderItemOption = getOrderItemOption(orderItems, scan);
                                         if (orderItemOption.equals("x")) {
                                             continue;
                                         }
@@ -117,11 +116,11 @@ public class OrderScreen implements IScreen {
         }
     }
 
-    private String getOrderOption(String title, List<Order> orders, Scanner scan) {
+    private String getOrderOption(List<Order> orders, Scanner scan) {
         String orderOption = "";
         while (true) {
             clearScreen();
-            System.out.println(title);
+            System.out.println("Choosing order...");
             // show order options
             showOrderOptions(orders);
 
@@ -134,7 +133,7 @@ public class OrderScreen implements IScreen {
             } else if (!isValidNumber(orderOption) || Integer.parseInt(orderOption) < 1
                     || Integer.parseInt(orderOption) > orders.size()) {
                 clearScreen();
-                System.out.println("Must be a number between 1 and " + orders.size());
+                System.out.println("Input is invalid: must be a number between 1 and " + orders.size());
                 System.out.print("\nEnter to continue...");
                 scan.nextLine();
                 continue;
@@ -144,11 +143,11 @@ public class OrderScreen implements IScreen {
         }
     }
 
-    private String getOrderItemOption(String title, List<OrderItem> orderItems, Scanner scan) {
+    private String getOrderItemOption(List<OrderItem> orderItems, Scanner scan) {
         String orderItemOption = "";
         while (true) {
             clearScreen();
-            System.out.println(title);
+            System.out.println("Choosing item...");
             // show order options
             showOrderItemOptions(orderItems);
 
@@ -161,7 +160,7 @@ public class OrderScreen implements IScreen {
             } else if (!isValidNumber(orderItemOption) || Integer.parseInt(orderItemOption) < 1
                     || Integer.parseInt(orderItemOption) > orderItems.size()) {
                 clearScreen();
-                System.out.println("Must be a number between 1 and " + orderItems.size());
+                System.out.println("Input is invalid: must be a number between 1 and " + orderItems.size());
                 System.out.print("\nEnter to continue...");
                 scan.nextLine();
                 continue;
@@ -189,31 +188,44 @@ public class OrderScreen implements IScreen {
     }
 
     private void leaveReview(OrderItem orderItem, Scanner scan) {
-        /* TODO */
+        String input = "";
         while (true) {
             clearScreen();
-            System.out.println("\nWelcome to Review screen");
-         
-            System.out.println("What out of 5 would you rate this product");
-            Integer value = scan.nextInt();
-            scan.nextLine();
-            System.out.println("Please describe your opinion of the product");
+            System.out.println("Welcome to Review screen");
+
+            System.out.println("\nWhat out of 5 would you rate this product");
+            System.out.print("\nEnter rating: ");
+            input = scan.nextLine();
+            if (!isValidNumber(input) || Integer.parseInt(input) < 0 || Integer.parseInt(input) > 5) {
+                clearScreen();
+                System.out.println("Input is invalid: must be a number between 0 and 5");
+                System.out.print("\nEnter to continue...");
+                scan.nextLine();
+                continue;
+            }
+            int value = Integer.parseInt(input);
+
+            System.out.println("\nPlease describe your opinion of the product");
+            System.out.print("\nEnter description: ");
             String value2 = scan.nextLine();
 
-            System.out.println("Please confirm your information is correct: " + orderItem.getName());
-            System.out.println("Rating " + value);
-            System.out.println("Description " + value2);
-            System.out.println("yes/No");
+            System.out.println("\nPlease confirm your information is correct: " + orderItem.getName());
+            System.out.println("\nRating: " + value);
+            System.out.println("Description: " + value2);
+            System.out.print("\nEnter (y/n): ");
             String value3 = scan.nextLine().toLowerCase();
-            if (value3.equals("yes")) {
-              
+            if (value3.equals("y")) {
+
                 reviewService.sendAReview(new Review(value, value2, orderItem.getProduct_id(), session.getId()));
-                System.out.println("Your review has been submitted. Please hit enter to return to viewing your order.");
+                clearScreen();
+                System.out.println("Your review has been submitted!");
+                System.out.print("\nPlease hit enter to return to viewing your order...");
                 scan.nextLine();
             } else {
-                    System.out.println("Scrapping your previous rating. Please hit enter and try again..");
-                    scan.nextLine();
-                    continue;
+                clearScreen();
+                System.out.println("Scrapping your previous rating. Please hit enter and try again...");
+                scan.nextLine();
+                continue;
             }
             break;
         }

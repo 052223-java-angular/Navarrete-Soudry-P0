@@ -14,7 +14,7 @@ public class CartService {
     private final CartDAO cartDao;
 
     public void genericCase() {
-        
+
     }
 
     public void createCart(Cart cart) {
@@ -25,11 +25,8 @@ public class CartService {
         cartDao.createCartItem(cartItem);
     }
 
-    public Optional<Cart> findCartByUserId(String userId) {
-        Optional<Cart> cartFound = cartDao.findCartByUserId(userId);
-        if (cartFound.isEmpty()) {
-            return Optional.empty();
-        }
+    public Cart findCartByUserId(String userId) {
+        Cart cartFound = cartDao.findCartByUserId(userId);
         return cartFound;
     }
 

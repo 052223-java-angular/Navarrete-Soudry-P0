@@ -22,12 +22,12 @@ public class OrderItem {
     private String order_id;
     private String product_id;
 
-    public OrderItem(OrderItem orderItem) {
+    public OrderItem(String name, int quantity, BigDecimal price, String order_id, String product_id) {
         this.id = UUID.randomUUID().toString();
-        this.name = orderItem.getId();
-        this.quantity = orderItem.getQuantity();
-        this.price = orderItem.getPrice();
-        this.order_id = orderItem.getOrder_id();
-        this.product_id = orderItem.getProduct_id();
+        this.name = name;
+        this.quantity = quantity;
+        this.price = price;
+        this.order_id = order_id;
+        this.product_id = product_id;
     }
 }
