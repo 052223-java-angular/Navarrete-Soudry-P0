@@ -51,5 +51,5 @@ database to store product and user information.
 
 ## ERD
 
-![entity relationship diagram](https://github.com/052223-java-angular/Navarrete-Soudry-P0/blob/develop/src/main/resources/db/erd.png?raw=true)
+![entity relationship diagram](src/main/resources/db/erd.png?raw=true)
 
