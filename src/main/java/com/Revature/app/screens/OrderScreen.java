@@ -9,7 +9,7 @@ import com.Revature.app.models.OrderItem;
 import com.Revature.app.models.Session;
 import com.Revature.app.services.OrderService;
 import com.Revature.app.services.ReviewService;
-// import com.Revature.app.services.RouterService;
+import com.Revature.app.services.RouterService;
 
 import com.Revature.app.models.Review;
 
@@ -18,9 +18,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class OrderScreen implements IScreen {
     private final OrderService orderService;
-
-    // private final RouterService router;
-=======
     private final ReviewService reviewService;
     private final RouterService router;
 

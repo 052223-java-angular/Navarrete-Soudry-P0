@@ -27,10 +27,5 @@ public class Session {
         this.id = id;
         this.username = name;
         this.cart_id = cart_id;
-
-    public void setSession(User user, String cart_id) {
-        this.id = user.getId();
-        this.username = user.getUsername();
-        this.cart_id = cart_id;
     }
 }

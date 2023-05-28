@@ -27,7 +27,7 @@ public class MainScreen implements IScreen {
 
     @Override
     public void start(Scanner scan) {
-<
+
         exit: {
         while (true) {
             clearScreen();
@@ -57,7 +57,6 @@ public class MainScreen implements IScreen {
                     Float f2 = scan.nextFloat();
                     Optional<List<Product>> pricedProduct = product.getByPrice(f1, f2);
                     if (pricedProduct.isPresent()) {
-                    
                         learnMoreAboutProducts(scan, pricedProduct);
                     }
                     // reset scan
@@ -96,9 +95,7 @@ public class MainScreen implements IScreen {
                 case "x":
                     break exit;
             }
-=
         }
-      
         }
     }
        /* ------------------ Helper Methods ---------------- */
@@ -109,37 +106,12 @@ public class MainScreen implements IScreen {
         while (true) {
 
             listOutProduct(P);
-
-
-            System.out.println("YOUR PRODUCTS!!!!!");
-            System.out.print("Name ");
-            System.out.print("Price ");
-            System.out.print("Stock ");
-            System.out.println("Category ");
-            for (Product product : P) {
-
-                System.out.print(product.getName() + " ");
-                System.out.print(product.getPrice() + " ");
-                System.out.print(product.getStock() + " ");
-                System.out.println(product.getCategory_id() + " ");
-            }
-
-            System.out.println("");
-
-            for (int i = 0; i < P.size(); i++) {
-                // int v = i + 1;
-                System.out.println("Press " + i + " to get more info on " + P.get(i).getName());
-            }
-
+            // System.out.println("");
             Integer value = P.size() + 1;
             System.out.println("Press " + value + " to go back to the main menu");
             Integer choice = scan.nextInt();
             clearScreen();
             printOutFinerDetails(scan, choice, P);
-            if (choice > P.size()) {
-                System.out.println("This is inside " + choice);
-                break;
-            }
         }
     }
 
@@ -182,7 +154,7 @@ public class MainScreen implements IScreen {
 
     public void listOutProduct(List<Product> P) {
         if (!new ArrayList<>(P).isEmpty()) {
-                System.out.println("The Products we have for sail.");
+                System.out.println("The Products we have for sale.");
                 System.out.print("Name ");
                 System.out.print("Price ");
                 System.out.print("Stock ");
@@ -214,16 +186,14 @@ public class MainScreen implements IScreen {
                 BigDecimal totalCalculation = new BigDecimal(String.valueOf(numberOfProduct)).multiply(P.getPrice());
                 CartItem cartItem = new CartItem(P.getName(), P.getStock(), numberOfProduct, totalCalculation, session.getCart_id(), P.getId());
                 cart.createCartItem(cartItem);
-                System.out.println("Thank you for submitting your cartItem");
+                System.out.println("You have added " + numberOfProduct + " " + P.getName() + " to your cart.");
                 break;
             }
         }
-
-        System.out.println("This is the code when you buyin.");
-        // buying logic
-
-        System.out.println("Please hit enter");
         scan.nextLine();
+        System.out.println("Please hit enter to be return to your previous item query.");
+        scan.nextLine();
+        clearScreen();
     }
  
     private void clearScreen() {
