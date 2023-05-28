@@ -3,8 +3,10 @@ package com.Revature.app.screens;
 import java.util.Optional;
 import java.util.Scanner;
 
+import com.Revature.app.models.Cart;
 import com.Revature.app.models.Session;
 import com.Revature.app.models.User;
+import com.Revature.app.services.CartService;
 import com.Revature.app.services.RouterService;
 import com.Revature.app.services.UserService;
 import com.Revature.app.models.Cart;
@@ -15,6 +17,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class LoginScreen implements IScreen {
     private UserService userService;
+    private CartService cartService;
     private RouterService router;
     private Session session;
     private CartService cartService;
@@ -59,12 +62,19 @@ public class LoginScreen implements IScreen {
                             scan.nextLine();
                             break;
                         }
+                        // find cart
+                        Cart cart = cartService.findCartByUserId(foundUser.get().getId());
+                        // create session
+                        session.setSession(foundUser.get(), cart.getId());
+                        // successful login
                         System.out.println("\nLogin successful!");
-                        System.out.print("Press enter to continue...");
+                        System.out.print("\nPress enter to continue...");
                         scan.nextLine();
+
                         // create session
                         Cart cart = cartService.findCartByUserId(foundUser.get().getId());
                         session.setSession(foundUser.get(), cart.getId());
+
                         // navigate to main screen
                         router.navigate("/mainApp", scan);
                         break exit;

@@ -84,6 +84,33 @@ public class CartDAO {
         }
     }
 
+    public Cart findCartByCartId(String cartId) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String sql = "SELECT * FROM carts WHERE id = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, cartId);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    Cart cart = new Cart();
+                    if (rs.next()) {
+                        cart.setId(rs.getString("id"));
+                        cart.setTotal_cost(rs.getBigDecimal("total_cost"));
+                        cart.setUser_id(rs.getString("user_id"));
+                    }
+                    return cart;
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+    }
+
     public List<CartItem> findAllCartItemsByCartId(String cartId) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "SELECT cart_items.id, cart_items.quantity, cart_items.cart_id, cart_items.price, " +

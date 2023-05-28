@@ -31,11 +31,11 @@ public class RouterService {
                 new MainScreen(getProductsService(), this, getCartService(), session).start(scan);
                 break;
             case "/cart":
-                new CartScreen(getCartService(), getOrderService(), this, session).start(scan);
+                new CartScreen(getCartService(), getOrderService(), getProductsService(), this, session).start(scan);
+                break;
             case "/orders":
-                new OrderScreen(getOrderService(), 
-                // this, 
-                session, getReviewService()).start(scan);
+                new OrderScreen(getOrderService(), getReviewService(), this, session).start(scan);
+                break;
             default:
                 break;
         }

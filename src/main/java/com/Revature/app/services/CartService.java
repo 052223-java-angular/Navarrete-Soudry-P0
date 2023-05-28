@@ -25,6 +25,10 @@ public class CartService {
         return cartFound;
     }
 
+    public Cart findCartByCartId(String cartId) {
+        return cartDao.findCartByCartId(cartId);
+    }
+
     public List<CartItem> findAllCartItemsByCartId(String cartId) {
         List<CartItem> cartItems = cartDao.findAllCartItemsByCartId(cartId);
         return cartItems;

@@ -18,9 +18,13 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class OrderScreen implements IScreen {
     private final OrderService orderService;
+
     // private final RouterService router;
-    private Session session;
+=======
     private final ReviewService reviewService;
+    private final RouterService router;
+
+    private Session session;
 
     @Override
     public void start(Scanner scan) {
