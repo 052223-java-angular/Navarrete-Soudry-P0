@@ -1,7 +1,6 @@
 package com.Revature.app.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.Revature.app.daos.CartDAO;
 import com.Revature.app.models.Cart;
@@ -28,6 +27,10 @@ public class CartService {
     public Cart findCartByUserId(String userId) {
         Cart cartFound = cartDao.findCartByUserId(userId);
         return cartFound;
+    }
+
+    public Cart findCartByCartId(String cartId) {
+        return cartDao.findCartByCartId(cartId);
     }
 
     public List<CartItem> findAllCartItemsByCartId(String cartId) {
