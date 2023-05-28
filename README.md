@@ -45,9 +45,9 @@ database to store product and user information.
   password=yours
   ```
 - **Additional Resources**:
-- - Docker Documentation: https://docs.docker.com/
-- - Maven Documentation: https://maven.apache.org/guides/index.html
-- - DBeaver Documentation: https://dbeaver.io/docs/
+  - Docker Documentation: https://docs.docker.com/
+  - Maven Documentation: https://maven.apache.org/guides/index.html
+  - DBeaver Documentation: https://dbeaver.io/docs/
 
 ## ERD
 
