@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import com.Revature.app.models.Cart;
 import com.Revature.app.models.CartItem;
@@ -64,6 +63,33 @@ public class CartDAO {
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, userId);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    Cart cart = new Cart();
+                    if (rs.next()) {
+                        cart.setId(rs.getString("id"));
+                        cart.setTotal_cost(rs.getBigDecimal("total_cost"));
+                        cart.setUser_id(rs.getString("user_id"));
+                    }
+                    return cart;
+                }
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException("Unable to connect to db");
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+    }
+
+    public Cart findCartByCartId(String cartId) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String sql = "SELECT * FROM carts WHERE id = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, cartId);
 
                 try (ResultSet rs = ps.executeQuery()) {
                     Cart cart = new Cart();

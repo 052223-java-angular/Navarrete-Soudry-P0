@@ -12,6 +12,35 @@ import com.Revature.app.models.Product;
 import com.Revature.app.utils.ConnectionFactory;
 
 public class ProductDAO {
+    public Optional<Product> getProductById(String id) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String sql = "SELECT * FROM products WHERE id = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, id);
+
+                try (ResultSet rs = ps.executeQuery()) {
+                    Product product = new Product();
+                    if (rs.next()) {
+                        product.setId(rs.getString("id"));
+                        product.setName(rs.getString("name"));
+                        product.setDescription(rs.getString("description"));
+                        product.setPrice(rs.getBigDecimal("price"));
+                        product.setStock(rs.getInt("stock"));
+                        product.setCategory_id(rs.getString("category_id"));
+                    }
+
+                    return Optional.of(product);
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+    }
 
     public Optional<List<Product>> grabAllAvailableProductsOptional() {
         System.out.println("Made it to Dao");
@@ -129,6 +158,29 @@ public class ProductDAO {
                     }
                     return Optional.of(p1);
                 }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException("Cannot find application.properties");
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException("Unable to load jdbc");
+        }
+    }
+
+    public void updateProduct(Product product) {
+        try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
+            String sql = "UPDATE products SET name = ?, description = ?, price = ?, stock = ? , category_id = ? WHERE id = ?";
+
+            try (PreparedStatement ps = conn.prepareStatement(sql)) {
+                ps.setString(1, product.getName());
+                ps.setString(2, product.getDescription());
+                ps.setBigDecimal(3, product.getPrice());
+                ps.setInt(4, product.getStock());
+                ps.setString(5, product.getCategory_id());
+                ps.setString(6, product.getId());
+
+                ps.executeUpdate();
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

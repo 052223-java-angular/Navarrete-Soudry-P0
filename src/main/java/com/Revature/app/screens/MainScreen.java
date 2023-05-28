@@ -37,10 +37,10 @@ public class MainScreen implements IScreen {
 
         switch (input.toLowerCase()) {
             case "1":
-            Optional<List<Product>> p1 = product.getAll();
-            if (p1.isPresent()) {
-                learnMoreAboutProducts(scan, p1);
-            }
+                Optional<List<Product>> p1 = product.getAll();
+                if (p1.isPresent()) {
+                    learnMoreAboutProducts(scan, p1);
+                }
                 break;
             case "2":
                 System.out.println("What is the minimum price you are looking for?");
@@ -83,6 +83,7 @@ public class MainScreen implements IScreen {
                 break;
             case "5":
                 router.navigate("/orders", scan);
+                break;
             case "x":
                 router.navigate("/home", scan);
                 break;
@@ -105,14 +106,14 @@ public class MainScreen implements IScreen {
             System.out.print("Stock ");
             System.out.println("Category ");
             for (Product product : P) {
-        
-                System.out.print(product.getName() + " " );
-                System.out.print(product.getPrice() + " " );
-                System.out.print(product.getStock() + " " );
-                System.out.println(product.getCategory_id() + " " );
-        }
 
-        System.out.println("");
+                System.out.print(product.getName() + " ");
+                System.out.print(product.getPrice() + " ");
+                System.out.print(product.getStock() + " ");
+                System.out.println(product.getCategory_id() + " ");
+            }
+
+            System.out.println("");
 
             for (int i = 0; i < P.size(); i++) {
                 // int v = i + 1;
@@ -131,7 +132,7 @@ public class MainScreen implements IScreen {
             }
         }
     }
-    
+
     private void printOutFinerDetails(Scanner scan, Integer counter, List<Product> P) {
         if (counter.equals(P.size())) {
             for (int i = 0; i < P.size(); i++) {
@@ -143,10 +144,10 @@ public class MainScreen implements IScreen {
         } else if (counter < P.size()) {
             String name = P.get(counter).getName();
             Optional<List<Review>> reviews = product.getReview(name);
-    
+
             System.out.println(P.get(counter).getName());
             System.out.println(P.get(counter).getDescription());
-    
+
             if (reviews.isPresent()) {
                 List<Review> r2 = new ArrayList<>(reviews.get());
                 System.out.println("Rating Rating Description");
@@ -161,18 +162,18 @@ public class MainScreen implements IScreen {
             String value = scan.nextLine();
             switch (value) {
                 case "y":
-                buyingMethod(scan, P.get(counter));
-                break;
+                    buyingMethod(scan, P.get(counter));
+                    break;
                 default:
-                clearScreen();
-                break;
+                    clearScreen();
+                    break;
             }
         }
     }
 
     public void buyingMethod(Scanner scan, Product P) {
         System.out.println("This is the code when you buyin.");
-// buying logic
+        // buying logic
         System.out.println("Please hit enter");
         scan.nextLine();
     }

@@ -3,6 +3,7 @@ package com.Revature.app.screens;
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -10,9 +11,11 @@ import com.Revature.app.models.Cart;
 import com.Revature.app.models.CartItem;
 import com.Revature.app.models.Order;
 import com.Revature.app.models.OrderItem;
+import com.Revature.app.models.Product;
 import com.Revature.app.models.Session;
 import com.Revature.app.services.CartService;
 import com.Revature.app.services.OrderService;
+import com.Revature.app.services.ProductsService;
 import com.Revature.app.services.RouterService;
 
 import lombok.AllArgsConstructor;
@@ -21,12 +24,13 @@ import lombok.AllArgsConstructor;
 public class CartScreen implements IScreen {
     private final CartService cartService;
     private final OrderService orderService;
+    private final ProductsService productsService;
     private final RouterService router;
     private Session session;
 
     @Override
     public void start(Scanner scan) {
-        Cart cart = cartService.findCartByUserId(session.getId());
+        Cart cart = cartService.findCartByCartId(session.getCart_id());
         List<CartItem> cartItems = cartService.findAllCartItemsByCartId(cart.getId());
         String itemOption = "";
         String itemQuantity = "";
@@ -155,8 +159,22 @@ public class CartScreen implements IScreen {
                                             session.getId());
                                     orderService.createOrder(order);
 
-                                    // create order items and remove cart items
-                                    createOrderItemsAndRemoveCartItems(cartItems, order.getId());
+                                    for (CartItem cartItem : cartItems) {
+                                        // create order item
+                                        OrderItem orderItem = new OrderItem(cartItem.getName(), cartItem.getQuantity(),
+                                                cartItem.getPrice(),
+                                                order.getId(), cartItem.getProduct_id());
+                                        orderService.createOrderItem(orderItem);
+
+                                        // delete cart item
+                                        cartService.deleteCartItem(cartItem.getId());
+
+                                        // update product stock
+                                        Optional<Product> product = productsService
+                                                .getProductById(orderItem.getProduct_id());
+                                        product.get().setStock(product.get().getStock() - orderItem.getQuantity());
+                                        productsService.updateProduct(product.get());
+                                    }
 
                                     // update cart
                                     cart.setTotal_cost(BigDecimal.valueOf(0));
@@ -300,18 +318,6 @@ public class CartScreen implements IScreen {
         cartItem.setPrice(newPrice);
         cartItem.setQuantity(quantity);
         cartService.updateCartItem(cartItem);
-    }
-
-    public void createOrderItemsAndRemoveCartItems(List<CartItem> cartItems, String orderId) {
-        for (CartItem cartItem : cartItems) {
-            // create order item
-            OrderItem orderItem = new OrderItem(cartItem.getName(), cartItem.getQuantity(), cartItem.getPrice(),
-                    orderId, cartItem.getProduct_id());
-            orderService.createOrderItem(orderItem);
-
-            // delete cart item
-            cartService.deleteCartItem(cartItem.getId());
-        }
     }
 
     private boolean isValidNumber(String possibleNum) {
