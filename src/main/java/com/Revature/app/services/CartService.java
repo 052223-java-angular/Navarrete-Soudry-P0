@@ -1,7 +1,6 @@
 package com.Revature.app.services;
 
 import java.util.List;
-import java.util.Optional;
 
 import com.Revature.app.daos.CartDAO;
 import com.Revature.app.models.Cart;
@@ -12,10 +11,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class CartService {
     private final CartDAO cartDao;
-
-    public void genericCase() {
-
-    }
 
     public void createCart(Cart cart) {
         cartDao.createCart(cart);

@@ -19,6 +19,13 @@ public class Cart {
     private BigDecimal total_cost;
     private String user_id;
 
+
+    public Cart(BigDecimal total_cost, String user_id) {
+        this.id = UUID.randomUUID().toString();
+        this.total_cost = total_cost;
+        this.user_id = user_id;
+    }
+
     public Cart(Cart cart) {
         this.id = UUID.randomUUID().toString();
         this.total_cost = cart.getTotal_cost();

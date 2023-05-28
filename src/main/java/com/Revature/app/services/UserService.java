@@ -44,11 +44,11 @@ public class UserService {
 
     }
 
-    public void Register(String username, String password) {
+    public String Register(String username, String password) {
         String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
         User newUser = new User(username, hashed);
         userDao.registerUser(newUser);
-        System.out.println(newUser);
+        return newUser.getId();
     }
 
 }

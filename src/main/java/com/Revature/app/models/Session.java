@@ -14,9 +14,17 @@ import lombok.ToString;
 public class Session {
     private String id;
     private String username;
+    private String cart_id;
 
-    public void setSession(User user) {
+    public void setSession(User user, String cart_id)  {
         this.id = user.getId();
         this.username = user.getUsername();
+        this.cart_id = cart_id;
+    }
+
+    public void setSession(String id, String name, String cart_id)  {
+        this.id = id;
+        this.username = name;
+        this.cart_id = cart_id;
     }
 }

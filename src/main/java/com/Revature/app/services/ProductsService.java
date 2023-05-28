@@ -20,7 +20,6 @@ public class ProductsService {
     Optional<List<Product>> p1 = dao.grabAllAvailableProductsOptional();
     if (p1.isPresent()) {
         List<Product> productList = p1.get();
-        // printResult(productList);
         return Optional.of(new ArrayList<>(productList));
         }
     else {
@@ -35,7 +34,6 @@ public class ProductsService {
         Optional<List<Product>> p1 = dao.searchByName(value);
         if (p1.isPresent()) {
             List<Product> productList = p1.get();
-            // printResult(productList);
               return Optional.of(new ArrayList<>(productList));
         }  else {
             // Handle the case when the Optional does not contain a value
@@ -49,7 +47,6 @@ public class ProductsService {
         Optional<List<Product>> p1 = dao.searchByCategory(value);
         if (p1.isPresent()) {
             List<Product> productList = p1.get();
-            // printResult(productList);
             return Optional.of(new ArrayList<>(productList));
             }
         else {
@@ -63,7 +60,6 @@ public class ProductsService {
     Optional<List<Product>> p1 = dao.grabAllProductBy(f1, f2);
     if (p1.isPresent()) {
         List<Product> productList = p1.get();
-        // printResult(productList);
         return Optional.of(new ArrayList<>(productList));
         }
     else {
@@ -80,35 +76,5 @@ public class ProductsService {
         } else {
             return Optional.empty();
         }
-       
     }
-
-
-
-
-       /*
-     * ------------------------ Helper methods ------------------------------
-     */
-
-//     private void printResult(List<Product> P) {
-//         clearScreen();
-//         System.out.println("YOUR PRODUCTS!!!!!");
-//         System.out.print("Name ");
-//         System.out.print("Price ");
-//         System.out.print("Stock ");
-//         System.out.println("Category ");
-//         for (Product product : P) {
-    
-//             System.out.print(product.getName() + " " );
-//             System.out.print(product.getPrice() + " " );
-//             System.out.print(product.getStock() + " " );
-//             System.out.println(product.getCategory_id() + " " );
-//     }
-//     System.out.println("");
-//  }
-
-private void clearScreen() {
-    System.out.print("\033[H\033[2J");
-    System.out.flush();
-}
 }

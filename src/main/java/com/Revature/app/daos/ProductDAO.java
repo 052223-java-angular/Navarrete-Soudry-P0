@@ -14,7 +14,6 @@ import com.Revature.app.utils.ConnectionFactory;
 public class ProductDAO {
 
     public Optional<List<Product>> grabAllAvailableProductsOptional() {
-        System.out.println("Made it to Dao");
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "SELECT * FROM products WHERE stock > 0";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -109,14 +108,15 @@ public class ProductDAO {
 
     public Optional<List<Product>> searchByName(String qualifier) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
-            String sql = "SELECT * FROM products WHERE name = ? OR name LIKE '%?%'";
+            String sql = "SELECT * FROM products WHERE name = ? OR name LIKE ?";
 
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, qualifier);
+                ps.setString(2, "%" + qualifier + "%");
 
                 List<Product> p1 = new ArrayList<>();
                 try (ResultSet rs = ps.executeQuery()) {
-                    if (rs.next()) {
+                    while (rs.next()) {
 
                         Product product = new Product();
                         product.setId(rs.getString("id"));
