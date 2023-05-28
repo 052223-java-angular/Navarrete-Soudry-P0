@@ -16,10 +16,19 @@ public class ProductsService {
     private final ProductDAO dao;
     private final ReviewDAO revDao;
 
+
+    public Optional<List<Product>> getAll() {
+    Optional<List<Product>> p1 = dao.grabAllAvailableProductsOptional();
+    if (p1.isPresent()) {
+        List<Product> productList = p1.get();
+        return Optional.of(new ArrayList<>(productList));
+    }
+   }   
     public Optional<Product> getProductById(String productId) {
         Optional<Product> product = dao.getProductById(productId);
         if (product.isEmpty()) {
             return Optional.empty();
+
         }
 
         return product;
@@ -43,9 +52,13 @@ public class ProductsService {
         Optional<List<Product>> p1 = dao.searchByName(value);
         if (p1.isPresent()) {
             List<Product> productList = p1.get();
+
+              return Optional.of(new ArrayList<>(productList));
+        }  else {
             // printResult(productList);
             return Optional.of(new ArrayList<>(productList));
         } else {
+
             // Handle the case when the Optional does not contain a value
             System.out.println("There are no products in this category.");
             return Optional.empty();
@@ -57,7 +70,6 @@ public class ProductsService {
         Optional<List<Product>> p1 = dao.searchByCategory(value);
         if (p1.isPresent()) {
             List<Product> productList = p1.get();
-            // printResult(productList);
             return Optional.of(new ArrayList<>(productList));
         } else {
             // Handle the case when the Optional does not contain a value
@@ -67,6 +79,12 @@ public class ProductsService {
     }
 
     public Optional<List<Product>> getByPrice(Float f1, Float f2) {
+
+    Optional<List<Product>> p1 = dao.grabAllProductBy(f1, f2);
+    if (p1.isPresent()) {
+        List<Product> productList = p1.get();
+        return Optional.of(new ArrayList<>(productList));
+
         Optional<List<Product>> p1 = dao.grabAllProductBy(f1, f2);
         if (p1.isPresent()) {
             List<Product> productList = p1.get();
@@ -76,6 +94,7 @@ public class ProductsService {
             // Handle the case when the Optional does not contain a value
             System.out.println("There are no products in this price Range.");
             return Optional.empty();
+
         }
     }
 
@@ -117,4 +136,5 @@ public class ProductsService {
         System.out.print("\033[H\033[2J");
         System.out.flush();
     }
+
 }

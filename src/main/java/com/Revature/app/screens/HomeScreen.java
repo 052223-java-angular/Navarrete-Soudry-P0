@@ -19,7 +19,7 @@ public class HomeScreen implements IScreen {
                 clearScreen();
                 System.out.println("Welcome to the app!");
                 System.out.println("\n[1] Login screen");
-                System.out.println("[2] register screen");
+                System.out.println("[2] Register screen");
                 System.out.println("[x] Exit");
 
                 System.out.print("\nEnter: ");
@@ -34,6 +34,7 @@ public class HomeScreen implements IScreen {
                         break;
                     case "x":
                         System.out.println("\nGoodbye!");
+                        
                         break exit;
                     default:
                         clearScreen();

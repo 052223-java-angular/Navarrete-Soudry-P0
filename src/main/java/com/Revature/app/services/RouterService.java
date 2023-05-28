@@ -22,13 +22,13 @@ public class RouterService {
                 new HomeScreen(this).start(scan);
                 break;
             case "/login":
-                new LoginScreen(getUserService(), getCartService(), this, session).start(scan);
+                new LoginScreen(getUserService(), this, session, getCartService()).start(scan);
                 break;
             case "/register":
-                new RegistrationScreen(getUserService(), this).start(scan);
+                new RegistrationScreen(getUserService(), this, session, getCartService()).start(scan);
                 break;
             case "/mainApp":
-                new MainScreen(getProductsService(), this, getCartService()).start(scan);
+                new MainScreen(getProductsService(), this, getCartService(), session).start(scan);
                 break;
             case "/cart":
                 new CartScreen(getCartService(), getOrderService(), getProductsService(), this, session).start(scan);
