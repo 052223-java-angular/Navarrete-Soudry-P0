@@ -1,67 +1,55 @@
-# P0 - Pair Programming eCommerce Project
+# eCommerce Project
 
 ## Introduction
 
-This is a Java-based command-line interface (CLI) eCommerce application. The application will be primarily built using Java and will utilize a PostgreSQL database to store product and user information.
+This is a Java-based command-line interface (CLI) eCommerce application. The application will be primarily built using Java and will utilize a PostgreSQL
+database to store product and user information.
 
-## User Stories
+**Features**
 
-- **As a user**, I want to register an account so that I can have a personalized shopping experience.
-- **As a user**, I want to log in to my account so that I can access my shopping cart and order history.
-- **As a user**, I want to browse through products only when logging in.
-- **As a user**, I want to search for products by name, category, or price range so that I can find what I'm looking for.
-- **As a user**, I want to add products to my shopping cart so that I can purchase them later.
-- **As a user**, I want to modify the quantity or remove items from my cart so that I can make changes before finalizing the purchase.
-- **As a user**, I want to check out and pay for my order securely so that my personal and financial information is safe.
-- **As a user**, I want to review my order history so that I can keep track of my purchases.
-- **As a user**, I want to rate and review products so that I can share my experience with other users.
-- **As a user**, I want to view ratings and reviews from other users so that I can make informed buying decisions.
+- The user can create and account or login in to an existing account. After doing so a session will be created with relevant information, such as the user_id.
+- The user can browse products only when in a session.
+-  The user can search for products by name, category, or price range to filter their search down to what they are looking for.
+-  The user can add products to their existing cart
+-  The user can modify their cart. This includes removal of items or changing the quantity of certain items.
+-  The user can checkout and create an order if they go through with the purchase
+-  The user can views these order and the items for each order
+-  The user can create a review for their purchase items 
+-  The user can view ratings and reviews from other users when viewing a product
 
-
-## MVP (Minimum Viable Product)
-
-- User registration and login
-- Browsing and searching for products
-- Adding products to a shopping cart
-- Modifying the shopping cart
-- Secure payment process
-- Order history
-- Product rating and reviewing
-
-## Stretch Goals
-
-- Implementing a recommendation system based on user's previous purchases
-- Adding an admin role that can add, remove, or modify products
-- Implementing promotional codes and discounts
-- Adding a wish list feature
-
-## Tech Stacks
+**Tech Stack**
 
 - **Java**: The main programming language used for building the application.
 - **PostgreSQL**: Used as the database to store user, product, and order data.
 - **Maven or Gradle**: Used for managing project dependencies.
 - **JUnit**: A testing framework for Java applications, used to ensure our code works as expected.
 - **Log4j**: A logging utility for debugging purposes.
+- **Lombok**: Used to remove boilerplate code
 - **JDBC (Java Database Connectivity)**: An API for connecting and executing queries on the database.
 - **BCrypt**: A Java library for hashing and checking passwords for security.
 - **JUnit, Mockito, and PowerMock**: Used for unit and integration testing.
 - **Git and GitHub**: Used for version control.
 
-## Requirements
+## Installation Steps
+- **Installations**: Make sure to install Maven, Docker, and DBeaver onto your computer. 
+- **Set up Docker container**: Execute the following command in your terminal to run a PostgreSQL instance using Docker: 
+  ```
+  docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -p 5432:5432 -d postgres
+  ```
+  You can change the postgres password to your choosing.
+- **Set up Dbeaver**: In DBeaver create postgres connection. Username must be postgres, port must be 5432, and password must be the password used to create Docker container. Create a schema (must be lowercase) that you will use to store your data. Create new scripts and copy the ddl and dml under src/main/resources/db/ file path. Then execute these scripts on your schema.
+- **Application Properties**: Create an application.properties file under src/main/resources/ file path. Copy the following and replace 'yours' with your info:
+  ```
+  url=jdbc:postgresql://localhost:5432/postgres?currentSchema=yours
+  username=yours
+  password=yours
+  ```
+- **Additional Resources**:
+  - Docker Documentation: https://docs.docker.com/
+  - Maven Documentation: https://maven.apache.org/guides/index.html
+  - DBeaver Documentation: https://dbeaver.io/docs/
 
-- **Clean Codebase**: All code should be clean and well-documented. The repository should not include any unnecessary files or folders such as the `target/`, `.DS_Store`, etc. All files and directories should be appropriately named and organized.
+## ERD
 
-- **Database Design**: The database should be designed following the principles of the 3rd Normal Form (3NF) to ensure data integrity and efficiency. An Entity Relationship Diagram (ERD) should be included in the documentation.
-
-- **Secure**: All sensitive user data such as passwords must be securely hashed before storing it in the database. The application should not display any sensitive information in error messages.
-
-- **Error Handling**: The application should handle potential errors gracefully and provide clear and helpful error messages to the users.
-
-- **Testing**: The application should have a high test coverage. Unit tests and integration tests should be implemented using JUnit, Mockito, and PowerMock.
-
-- **Version Control**: The application should be developed using a version control system, preferably Git, with regular commits denoting progress.
-
-- **Documentation**: The repository should include a README file with clear instructions on how to run the application. Code should be well-commented to allow for easy understanding and maintenance.
-
-- **Scalable**: The design of the application should be scalable, allowing for easy addition of new features or modifications in the future.
+![entity relationship diagram](src/main/resources/db/erd.png?raw=true)
 
