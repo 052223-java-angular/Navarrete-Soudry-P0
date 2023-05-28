@@ -25,7 +25,7 @@ public class RouterService {
                 new LoginScreen(getUserService(), this, session, getCartService()).start(scan);
                 break;
             case "/register":
-                new RegistrationScreen(getUserService(), this, session, getCartService()).start(scan);
+                new RegistrationScreen(getUserService(), this, session).start(scan);
                 break;
             case "/mainApp":
                 new MainScreen(getProductsService(), this, getCartService(), session).start(scan);
@@ -34,7 +34,7 @@ public class RouterService {
                 new CartScreen(getCartService(), getOrderService(), getProductsService(), this, session).start(scan);
                 break;
             case "/orders":
-                new OrderScreen(getOrderService(), getReviewService(), this, session).start(scan);
+                new OrderScreen(getOrderService(), getReviewService(), session).start(scan);
                 break;
             default:
                 break;

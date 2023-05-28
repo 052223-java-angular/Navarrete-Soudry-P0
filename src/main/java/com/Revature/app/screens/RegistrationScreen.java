@@ -9,7 +9,6 @@ import com.Revature.app.services.RouterService;
 
 import lombok.AllArgsConstructor;
 import com.Revature.app.models.Session;
-import com.Revature.app.services.CartService;
 
 import com.Revature.app.models.Cart;
 
@@ -18,7 +17,6 @@ public class RegistrationScreen implements IScreen {
     public final UserService service;
     public final RouterService router;
     private Session session;
-    private CartService cartService;
 
      @Override
     public void start(Scanner scan) {

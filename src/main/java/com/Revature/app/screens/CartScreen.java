@@ -224,7 +224,7 @@ public class CartScreen implements IScreen {
                 switch (scan.nextLine()) {
                     case "1":
                         // navigate to product screen
-                        router.navigate("/home", scan); // TODO: replace
+                        router.navigate("/home", scan);
                         break exit;
                     case "x":
                         break exit;
