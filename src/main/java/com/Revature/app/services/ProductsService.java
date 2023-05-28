@@ -22,6 +22,10 @@ public class ProductsService {
     if (p1.isPresent()) {
         List<Product> productList = p1.get();
         return Optional.of(new ArrayList<>(productList));
+    } else {
+         // Handle the case when the Optional does not contain a value
+            System.out.println("There are no products available at this time.");
+            return Optional.empty();
     }
    }   
     public Optional<Product> getProductById(String productId) {
@@ -34,18 +38,18 @@ public class ProductsService {
         return product;
     }
 
-    public Optional<List<Product>> getAll() {
-        Optional<List<Product>> p1 = dao.grabAllAvailableProductsOptional();
-        if (p1.isPresent()) {
-            List<Product> productList = p1.get();
-            // printResult(productList);
-            return Optional.of(new ArrayList<>(productList));
-        } else {
-            // Handle the case when the Optional does not contain a value
-            System.out.println("There are no products available at this time.");
-            return Optional.empty();
-        }
-    }
+    // public Optional<List<Product>> getAll() {
+    //     Optional<List<Product>> p1 = dao.grabAllAvailableProductsOptional();
+    //     if (p1.isPresent()) {
+    //         List<Product> productList = p1.get();
+    //         // printResult(productList);
+    //         return Optional.of(new ArrayList<>(productList));
+    //     } else {
+    //         // Handle the case when the Optional does not contain a value
+    //         System.out.println("There are no products available at this time.");
+    //         return Optional.empty();
+    //     }
+    // }
 
     public Optional<List<Product>> getByName(String value) {
         System.out.print("test123");
@@ -56,12 +60,8 @@ public class ProductsService {
               return Optional.of(new ArrayList<>(productList));
         }  else {
             // printResult(productList);
-            return Optional.of(new ArrayList<>(productList));
-        } else {
-
-            // Handle the case when the Optional does not contain a value
-            System.out.println("There are no products in this category.");
             return Optional.empty();
+            // return Optional.of(new ArrayList<>(productList));
         }
     }
 
@@ -79,23 +79,24 @@ public class ProductsService {
     }
 
     public Optional<List<Product>> getByPrice(Float f1, Float f2) {
-
-    Optional<List<Product>> p1 = dao.grabAllProductBy(f1, f2);
-    if (p1.isPresent()) {
-        List<Product> productList = p1.get();
-        return Optional.of(new ArrayList<>(productList));
-
         Optional<List<Product>> p1 = dao.grabAllProductBy(f1, f2);
         if (p1.isPresent()) {
             List<Product> productList = p1.get();
-            // printResult(productList);
             return Optional.of(new ArrayList<>(productList));
         } else {
-            // Handle the case when the Optional does not contain a value
+            //  Handle the case when the Optional does not contain a value
             System.out.println("There are no products in this price Range.");
             return Optional.empty();
-
         }
+
+    // Optional<List<Product>> p1 = dao.grabAllProductBy(f1, f2);
+    // if (p1.isPresent()) {
+    //     List<Product> productList = p1.get();
+    //     return Optional.of(new ArrayList<>(productList));
+    //     else {
+    //        
+
+    //     }
     }
 
     public Optional<List<Review>> getReview(String reviewedItem) {

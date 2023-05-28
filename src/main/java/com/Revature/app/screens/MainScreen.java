@@ -27,7 +27,7 @@ public class MainScreen implements IScreen {
 
     @Override
     public void start(Scanner scan) {
-<
+
         exit: {
         while (true) {
             clearScreen();
@@ -57,7 +57,6 @@ public class MainScreen implements IScreen {
                     Float f2 = scan.nextFloat();
                     Optional<List<Product>> pricedProduct = product.getByPrice(f1, f2);
                     if (pricedProduct.isPresent()) {
-                    
                         learnMoreAboutProducts(scan, pricedProduct);
                     }
                     // reset scan
@@ -96,9 +95,7 @@ public class MainScreen implements IScreen {
                 case "x":
                     break exit;
             }
-=
         }
-      
         }
     }
        /* ------------------ Helper Methods ---------------- */
