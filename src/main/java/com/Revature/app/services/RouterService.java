@@ -25,7 +25,7 @@ public class RouterService {
                 new LoginScreen(getUserService(), this, session, getCartService()).start(scan);
                 break;
             case "/register":
-                new RegistrationScreen(getUserService(), this, session).start(scan);
+                new RegistrationScreen(getUserService(), getCartService(), this, session).start(scan);
                 break;
             case "/mainApp":
                 new MainScreen(getProductsService(), this, getCartService(), getReviewService(), session).start(scan);

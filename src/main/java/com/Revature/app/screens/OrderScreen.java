@@ -22,7 +22,7 @@ public class OrderScreen implements IScreen {
 
     @Override
     public void start(Scanner scan) {
-        List<Order> orders = orderService.getAllOrdersByUserId(session.getId());
+        List<Order> orders = orderService.findAllOrdersByUserId(session.getId());
         String orderOption = "";
         String orderItemOption = "";
         exit: {
@@ -50,7 +50,7 @@ public class OrderScreen implements IScreen {
                             }
 
                             List<OrderItem> orderItems = orderService
-                                    .getAllOrderItemsByOrderId(
+                                    .findAllOrderItemsByOrderId(
                                             orders.get(Integer.parseInt(orderOption) - 1).getId());
                             while (true) {
                                 clearScreen();
