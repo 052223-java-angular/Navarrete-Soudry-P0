@@ -1,9 +1,9 @@
-package com.Revature.app.Services;
+package com.Revature.app.services;
+
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import com.Revature.app.daos.ProductDAO;
-import com.Revature.app.services.ProductsService;
 import org.junit.Before;
 import static org.junit.Assert.*;
 import java.util.Optional;
@@ -17,154 +17,159 @@ import static org.mockito.Mockito.*;
 public class ProductServiceTest {
 
     @Mock
-   private ProductDAO productDAO;
-   // @Mock
-   private ProductsService productService;
+    private ProductDAO productDAO;
+    // @Mock
+    private ProductsService productService;
 
-   @Before
-   public void setUp() {
+    @Before
+    public void setUp() {
         // Initialize the Mockito framework
         MockitoAnnotations.openMocks(this);
         // Create a new instance of the UserService class with the mocked dependencies
         productService = new ProductsService(productDAO);
     }
 
-   @Test
-   public void getALLTest() {
-    String id = "2ea3b385-ec1c-423a-a530-5550a397f8c5" ;
-    String id2 = "3ea3b385-ec1c-423a-a530-5550a397f8c5" ;
-    String id3 = "3ea3b385-ec7c-423a-a530-5550a397f8c5" ;
-    String name = "TestProduct";
-    String Description = "Test Description";
-    BigDecimal price = new BigDecimal(0);
-    Integer stock = 25;
-    String category_id = "2e45b385-ec1c-423a-a530-5550a399f8c5";
+    @Test
+    public void getALLTest() {
+        String id = "2ea3b385-ec1c-423a-a530-5550a397f8c5";
+        String id2 = "3ea3b385-ec1c-423a-a530-5550a397f8c5";
+        String id3 = "3ea3b385-ec7c-423a-a530-5550a397f8c5";
+        String name = "TestProduct";
+        String Description = "Test Description";
+        BigDecimal price = new BigDecimal(0);
+        Integer stock = 25;
+        String category_id = "2e45b385-ec1c-423a-a530-5550a399f8c5";
 
-    // Create a list of reviews to be returned by the mock
-    List<Product> mockProduct = new ArrayList<>();
-    mockProduct.add(new Product(id, name, Description, price, stock, category_id));
-    mockProduct.add(new Product(id2, name, Description, price, stock, category_id));
-    mockProduct.add(new Product(id3, name, Description, price, stock, category_id));
+        // Create a list of reviews to be returned by the mock
+        List<Product> mockProduct = new ArrayList<>();
+        mockProduct.add(new Product(id, name, Description, price, stock, category_id));
+        mockProduct.add(new Product(id2, name, Description, price, stock, category_id));
+        mockProduct.add(new Product(id3, name, Description, price, stock, category_id));
 
-    when(productDAO.grabAllAvailableProductsOptional()).thenReturn(Optional.of(mockProduct));
+        when(productDAO.grabAllAvailableProductsOptional()).thenReturn(Optional.of(mockProduct));
 
-    Optional<List<Product>> result = productService.getAll();
+        Optional<List<Product>> result = productService.getAll();
 
-    assertTrue(result.isPresent());
-    assertEquals(mockProduct, result.get());
+        assertTrue(result.isPresent());
+        assertEquals(mockProduct, result.get());
 
-    verify(productDAO).grabAllAvailableProductsOptional();
-   }
-   @Test
-   public void getProductByIdTest() {
-    String id = "2ea3b385-ec1c-423a-a530-5550a397f8c5" ;
-    String name = "TestProduct";
-    String Description = "Test Description";
-    BigDecimal price = new BigDecimal(0);
-    Integer stock = 25;
-    String category_id = "2e45b385-ec1c-423a-a530-5550a399f8c5";
+        verify(productDAO).grabAllAvailableProductsOptional();
+    }
 
-    // Create a list of reviews to be returned by the mock
-    Product mockProduct = new Product(id, name, Description, price, stock, category_id);
+    @Test
+    public void getProductByIdTest() {
+        String id = "2ea3b385-ec1c-423a-a530-5550a397f8c5";
+        String name = "TestProduct";
+        String Description = "Test Description";
+        BigDecimal price = new BigDecimal(0);
+        Integer stock = 25;
+        String category_id = "2e45b385-ec1c-423a-a530-5550a399f8c5";
 
-    when(productDAO.getProductById(id)).thenReturn(Optional.of(mockProduct));
+        // Create a list of reviews to be returned by the mock
+        Product mockProduct = new Product(id, name, Description, price, stock, category_id);
 
-    Optional<Product> result = productService.getProductById(id);
+        when(productDAO.getProductById(id)).thenReturn(Optional.of(mockProduct));
 
-    assertTrue(result.isPresent());
-    assertEquals(mockProduct, result.get());
+        Optional<Product> result = productService.getProductById(id);
 
-    verify(productDAO).getProductById(id);
-   }
-   @Test
-   public void getByNameTest(){
-    String id = "2ea3b385-ec1c-423a-a530-5550a397f8c5" ;
-    String id2 = "3ea3b385-ec1c-423a-a530-5550a397f8c5" ;
-    String name = "TestProduct";
-    String name2 = "TestProduct2";
-    String Description = "Test Description";
-    BigDecimal price = new BigDecimal(0);
-    Integer stock = 25;
-    String category_id = "2e45b385-ec1c-423a-a530-5550a399f8c5";
+        assertTrue(result.isPresent());
+        assertEquals(mockProduct, result.get());
 
-    // Create a list of reviews to be returned by the mock
-    List<Product> mockProduct = new ArrayList<>();
-    mockProduct.add(new Product(id, name, Description, price, stock, category_id));
-    mockProduct.add(new Product(id2, name2, Description, price, stock, category_id));
+        verify(productDAO).getProductById(id);
+    }
 
-    when(productDAO.searchByName(name)).thenReturn(Optional.of(mockProduct));
+    @Test
+    public void getByNameTest() {
+        String id = "2ea3b385-ec1c-423a-a530-5550a397f8c5";
+        String id2 = "3ea3b385-ec1c-423a-a530-5550a397f8c5";
+        String name = "TestProduct";
+        String name2 = "TestProduct2";
+        String Description = "Test Description";
+        BigDecimal price = new BigDecimal(0);
+        Integer stock = 25;
+        String category_id = "2e45b385-ec1c-423a-a530-5550a399f8c5";
 
-    Optional<List<Product>> result = productService.getByName(name);
+        // Create a list of reviews to be returned by the mock
+        List<Product> mockProduct = new ArrayList<>();
+        mockProduct.add(new Product(id, name, Description, price, stock, category_id));
+        mockProduct.add(new Product(id2, name2, Description, price, stock, category_id));
 
-    assertTrue(result.isPresent());
-    assertEquals(mockProduct, result.get());
+        when(productDAO.searchByName(name)).thenReturn(Optional.of(mockProduct));
 
-    verify(productDAO).searchByName(name);
-   }
-   @Test
-   public void getByCategoryTest() {
-    String id = "2ea3b385-ec1c-423a-a530-5550a397f8c5" ;
-    String id2 = "3ea3b385-ec1c-423a-a530-5550a397f8c5" ;
-    String name = "TestProduct";
-    String name2 = "TestProduct2";
-    String Description = "Test Description";
-    BigDecimal price = new BigDecimal(0);
-    Integer stock = 25;
-    String category_id = "2e45b385-ec1c-423a-a530-5550a399f8c5";
+        Optional<List<Product>> result = productService.getByName(name);
 
-    // Create a list of reviews to be returned by the mock
-    List<Product> mockProduct = new ArrayList<>();
-    mockProduct.add(new Product(id, name, Description, price, stock, category_id));
-    mockProduct.add(new Product(id2, name2, Description, price, stock, category_id));
+        assertTrue(result.isPresent());
+        assertEquals(mockProduct, result.get());
 
-    when(productDAO.searchByCategory(category_id)).thenReturn(Optional.of(mockProduct));
+        verify(productDAO).searchByName(name);
+    }
 
-    Optional<List<Product>> result = productService.getByCategory(category_id);
+    @Test
+    public void getByCategoryTest() {
+        String id = "2ea3b385-ec1c-423a-a530-5550a397f8c5";
+        String id2 = "3ea3b385-ec1c-423a-a530-5550a397f8c5";
+        String name = "TestProduct";
+        String name2 = "TestProduct2";
+        String Description = "Test Description";
+        BigDecimal price = new BigDecimal(0);
+        Integer stock = 25;
+        String category_id = "2e45b385-ec1c-423a-a530-5550a399f8c5";
 
-    assertTrue(result.isPresent());
-    assertEquals(mockProduct, result.get());
+        // Create a list of reviews to be returned by the mock
+        List<Product> mockProduct = new ArrayList<>();
+        mockProduct.add(new Product(id, name, Description, price, stock, category_id));
+        mockProduct.add(new Product(id2, name2, Description, price, stock, category_id));
 
-    verify(productDAO).searchByCategory(category_id);
-   }
-   @Test
-   public void getByPriceTest() {
-    String id = "2ea3b385-ec1c-423a-a530-5550a397f8c5" ;
-    String id2 = "3ea3b385-ec1c-423a-a530-5550a397f8c5" ;
-    String name = "TestProduct";
-    String name2 = "TestProduct2";
-    String Description = "Test Description";
-    BigDecimal price = new BigDecimal(10.0);
-    BigDecimal price2 = new BigDecimal(50.0);
-    Integer stock = 25;
-    String category_id = "2e45b385-ec1c-423a-a530-5550a399f8c5";
+        when(productDAO.searchByCategory(category_id)).thenReturn(Optional.of(mockProduct));
 
-    // Create a list of reviews to be returned by the mock
-    List<Product> mockProduct = new ArrayList<>();
-    mockProduct.add(new Product(id, name, Description, price, stock, category_id));
-    mockProduct.add(new Product(id2, name2, Description, price2, stock, category_id));
+        Optional<List<Product>> result = productService.getByCategory(category_id);
 
-    when(productDAO.grabAllProductBy(price, price2)).thenReturn(Optional.of(mockProduct));
+        assertTrue(result.isPresent());
+        assertEquals(mockProduct, result.get());
 
-    Optional<List<Product>> result = productService.getByPrice(price, price2);
+        verify(productDAO).searchByCategory(category_id);
+    }
 
-    assertTrue(result.isPresent());
-    assertEquals(mockProduct, result.get());
+    @Test
+    public void getByPriceTest() {
+        String id = "2ea3b385-ec1c-423a-a530-5550a397f8c5";
+        String id2 = "3ea3b385-ec1c-423a-a530-5550a397f8c5";
+        String name = "TestProduct";
+        String name2 = "TestProduct2";
+        String Description = "Test Description";
+        BigDecimal price = new BigDecimal(10.0);
+        BigDecimal price2 = new BigDecimal(50.0);
+        Integer stock = 25;
+        String category_id = "2e45b385-ec1c-423a-a530-5550a399f8c5";
 
-    verify(productDAO).grabAllProductBy(price, price2);
+        // Create a list of reviews to be returned by the mock
+        List<Product> mockProduct = new ArrayList<>();
+        mockProduct.add(new Product(id, name, Description, price, stock, category_id));
+        mockProduct.add(new Product(id2, name2, Description, price2, stock, category_id));
 
-   }
-   @Test
-   public void updateProductTest(){
-    String id = "2ea3b385-ec1c-423a-a530-5550a397f8c5" ;
-    String name = "TestProduct";
-    String Description = "Test Description";
-    BigDecimal price = new BigDecimal(10.0);
-    Integer stock = 25;
-    String category_id = "2e45b385-ec1c-423a-a530-5550a399f8c5";
+        when(productDAO.grabAllProductBy(price, price2)).thenReturn(Optional.of(mockProduct));
 
-    Product mockProduct = new Product(id, name, Description, price, stock, category_id);
-    productService.updateProduct(mockProduct);
-    verify(productDAO).updateProduct(mockProduct);
-  }
-    
+        Optional<List<Product>> result = productService.getByPrice(price, price2);
+
+        assertTrue(result.isPresent());
+        assertEquals(mockProduct, result.get());
+
+        verify(productDAO).grabAllProductBy(price, price2);
+
+    }
+
+    @Test
+    public void updateProductTest() {
+        String id = "2ea3b385-ec1c-423a-a530-5550a397f8c5";
+        String name = "TestProduct";
+        String Description = "Test Description";
+        BigDecimal price = new BigDecimal(10.0);
+        Integer stock = 25;
+        String category_id = "2e45b385-ec1c-423a-a530-5550a399f8c5";
+
+        Product mockProduct = new Product(id, name, Description, price, stock, category_id);
+        productService.updateProduct(mockProduct);
+        verify(productDAO).updateProduct(mockProduct);
+    }
+
 }
