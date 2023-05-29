@@ -18,11 +18,14 @@ import com.Revature.app.models.Product;
 import com.Revature.app.models.Review;
 import com.Revature.app.models.Session;
 
+import com.Revature.app.services.ReviewService;
+
 @AllArgsConstructor
 public class MainScreen implements IScreen {
     private final ProductsService product;
     private final RouterService router;
     private final CartService cart;
+    private final ReviewService review;
     private Session session;
 
     @Override
@@ -52,12 +55,13 @@ public class MainScreen implements IScreen {
                     break;
                 case "2":
                     System.out.println("What is the minimum price you are looking for?");
-                    Float f1 = scan.nextFloat();
+                    BigDecimal f1 = scan.nextBigDecimal();
                     System.out.println("What is the maximum price you are looking for?");
-                    Float f2 = scan.nextFloat();
+                    BigDecimal f2 = scan.nextBigDecimal();
                     Optional<List<Product>> pricedProduct = product.getByPrice(f1, f2);
                     if (pricedProduct.isPresent()) {
                         learnMoreAboutProducts(scan, pricedProduct);
+                       
                     }
                     // reset scan
                     scan.nextLine();
@@ -104,14 +108,20 @@ public class MainScreen implements IScreen {
         clearScreen();
         List<Product> P = new ArrayList<>(p.get());
         while (true) {
-
             listOutProduct(P);
-            // System.out.println("");
             Integer value = P.size() + 1;
             System.out.println("Press " + value + " to go back to the main menu");
             Integer choice = scan.nextInt();
             clearScreen();
+
+            if (choice.equals(value)) {
+                break;
+            }
+
+            
             printOutFinerDetails(scan, choice, P);
+            
+
         }
     }
 
@@ -124,7 +134,7 @@ public class MainScreen implements IScreen {
             buyingMethod(scan, P.get(b));
         } else if (counter < P.size()) {
             String name = P.get(counter).getName();
-            Optional<List<Review>> reviews = product.getReview(name);
+            Optional<List<Review>> reviews = review.getReview(name);
 
             System.out.println(P.get(counter).getName());
             System.out.println(P.get(counter).getDescription());
@@ -149,7 +159,7 @@ public class MainScreen implements IScreen {
                     clearScreen();
                     break;
             }
-        }
+        } 
     }
 
     public void listOutProduct(List<Product> P) {

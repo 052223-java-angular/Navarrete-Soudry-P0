@@ -1,6 +1,7 @@
 package com.Revature.app.daos;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -71,12 +72,12 @@ public class ProductDAO {
         }
     }
 
-    public Optional<List<Product>> grabAllProductBy(Float low, Float High) {
+    public Optional<List<Product>> grabAllProductBy(BigDecimal low, BigDecimal High) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "SELECT * FROM products WHERE price >= ? AND price <= ?";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
-                ps.setFloat(1, low);
-                ps.setFloat(2, High);
+                ps.setBigDecimal(1, low);
+                ps.setBigDecimal(2, High);
                 List<Product> p1 = new ArrayList<>();
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
