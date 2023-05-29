@@ -28,7 +28,7 @@ public class RouterService {
                 new RegistrationScreen(getUserService(), this, session).start(scan);
                 break;
             case "/mainApp":
-                new MainScreen(getProductsService(), this, getCartService(), session).start(scan);
+                new MainScreen(getProductsService(), this, getCartService(), getReviewService(), session).start(scan);
                 break;
             case "/cart":
                 new CartScreen(getCartService(), getOrderService(), getProductsService(), this, session).start(scan);
@@ -55,7 +55,7 @@ public class RouterService {
     }
 
     private ProductsService getProductsService() {
-        return new ProductsService(new ProductDAO(), new ReviewDAO());
+        return new ProductsService(new ProductDAO());
     }
 
     private ReviewService getReviewService() {

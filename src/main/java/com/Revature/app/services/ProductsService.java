@@ -2,11 +2,11 @@ package com.Revature.app.services;
 
 import com.Revature.app.daos.ProductDAO;
 import com.Revature.app.models.Product;
-import com.Revature.app.models.Review;
-import com.Revature.app.daos.ReviewDAO;
+
 
 import java.util.Optional;
 import java.util.List;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import lombok.AllArgsConstructor;
@@ -14,8 +14,6 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class ProductsService {
     private final ProductDAO dao;
-    private final ReviewDAO revDao;
-
 
     public Optional<List<Product>> getAll() {
     Optional<List<Product>> p1 = dao.grabAllAvailableProductsOptional();
@@ -28,13 +26,12 @@ public class ProductsService {
             return Optional.empty();
     }
    }   
+    
     public Optional<Product> getProductById(String productId) {
         Optional<Product> product = dao.getProductById(productId);
         if (product.isEmpty()) {
             return Optional.empty();
-
         }
-
         return product;
     }
 
@@ -65,7 +62,7 @@ public class ProductsService {
         }
     }
 
-    public Optional<List<Product>> getByPrice(Float f1, Float f2) {
+    public Optional<List<Product>> getByPrice(BigDecimal f1, BigDecimal f2) {
         Optional<List<Product>> p1 = dao.grabAllProductBy(f1, f2);
         if (p1.isPresent()) {
             List<Product> productList = p1.get();
@@ -73,15 +70,6 @@ public class ProductsService {
         } else {
             //  Handle the case when the Optional does not contain a value
             System.out.println("There are no products in this price Range.");
-            return Optional.empty();
-        }
-    }
-
-    public Optional<List<Review>> getReview(String reviewedItem) {
-        Optional<List<Review>> reviews = revDao.grabReviewByName(reviewedItem);
-        if (reviews.isPresent()) {
-            return Optional.of(reviews.get());
-        } else {
             return Optional.empty();
         }
     }
