@@ -14,7 +14,7 @@ public class UserService {
     private final UserDAO userDao;
 
     public Optional<User> login(String username, String password) {
-        Optional<User> userOpt = userDao.findByUsername(username);
+        Optional<User> userOpt = userDao.findUserByUsername(username);
         // check if no user was found
         // if user found also check if passwords don't match
         if (userOpt.isEmpty() || !BCrypt.checkpw(password, userOpt.get().getPassword())) {
@@ -23,9 +23,8 @@ public class UserService {
         return userOpt;
     }
 
-
     public boolean isValidUsername(String username) {
-    //   It ensures the username needs to be 5-10 characters long
+        // It ensures the username needs to be 5-10 characters long
         return username.matches("^\\w{5,10}$");
     }
 
@@ -39,16 +38,18 @@ public class UserService {
     }
 
     public boolean isValidPassword(String password) {
-            //   It ensures the username needs to be 5-10 characters long
+        // ensures password needs to be 5-10 characters long
+        // can't include: !@#$%^&*
+        // must include a number
         return password.matches("^(?=.*\\d)[\\w!@#$%^&*]{5,10}$");
 
     }
 
-    public String Register(String username, String password) {
+    public User Register(String username, String password) {
         String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
         User newUser = new User(username, hashed);
         userDao.registerUser(newUser);
-        return newUser.getId();
+        return newUser;
     }
 
 }
