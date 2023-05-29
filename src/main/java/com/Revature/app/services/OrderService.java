@@ -20,11 +20,11 @@ public class OrderService {
         orderDao.createOrderItem(orderItem);
     }
 
-    public List<Order> getAllOrdersByUserId(String userId) {
-        return orderDao.getAllOrdersByUserId(userId);
+    public List<Order> findAllOrdersByUserId(String userId) {
+        return orderDao.findAllOrdersByUserId(userId);
     }
 
-    public List<OrderItem> getAllOrderItemsByOrderId(String orderId) {
-        return orderDao.getAllOrderItemsByOrderId(orderId);
+    public List<OrderItem> findAllOrderItemsByOrderId(String orderId) {
+        return orderDao.findAllOrderItemsByOrderId(orderId);
     }
 }

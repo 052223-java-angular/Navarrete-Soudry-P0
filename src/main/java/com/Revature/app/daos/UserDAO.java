@@ -12,7 +12,7 @@ import com.Revature.app.models.User;
 import com.Revature.app.utils.ConnectionFactory;
 
 public class UserDAO {
-    public Optional<User> findByUsername(String username) {
+    public Optional<User> findUserByUsername(String username) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "SELECT * FROM users WHERE username = ?";
 
@@ -76,8 +76,7 @@ public class UserDAO {
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e
-            );
+            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException("Cannot find application.properties");
         } catch (ClassNotFoundException e) {

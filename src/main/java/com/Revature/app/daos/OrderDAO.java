@@ -57,7 +57,7 @@ public class OrderDAO {
         }
     }
 
-    public List<Order> getAllOrdersByUserId(String userId) {
+    public List<Order> findAllOrdersByUserId(String userId) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "SELECT * FROM orders WHERE user_id = ?";
 
@@ -88,7 +88,7 @@ public class OrderDAO {
         }
     }
 
-    public List<OrderItem> getAllOrderItemsByOrderId(String orderId) {
+    public List<OrderItem> findAllOrderItemsByOrderId(String orderId) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "SELECT order_items.id, order_items.quantity, order_items.price, order_items.order_id, " +
                     "order_items.product_id, products.name FROM order_items INNER JOIN products ON " +
