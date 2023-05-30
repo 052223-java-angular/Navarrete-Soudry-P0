@@ -21,6 +21,10 @@ import com.Revature.app.models.Session;
 
 import com.Revature.app.services.ReviewService;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 @AllArgsConstructor
 public class MainScreen implements IScreen {
     private final ProductsService product;
@@ -28,10 +32,11 @@ public class MainScreen implements IScreen {
     private final CartService cart;
     private final ReviewService review;
     private Session session;
+    private static final Logger logger = LogManager.getLogger(HomeScreen.class);
 
     @Override
     public void start(Scanner scan) {
-
+        logger.info("You have reached the main screen.");
         exit: {
             while (true) {
                 clearScreen();
@@ -50,6 +55,7 @@ public class MainScreen implements IScreen {
                 switch (input.toLowerCase()) {
                     case "1":
                         Optional<List<Product>> p1 = product.getAll();
+                        logger.info("User viewed all available items.");
                         if (p1.isPresent()) {
                             learnMoreAboutProducts(scan, p1);
                         }
@@ -57,10 +63,13 @@ public class MainScreen implements IScreen {
                     case "2":
                         System.out.println("What is the minimum price you are looking for?");
                         BigDecimal f1 = scan.nextBigDecimal();
+                        logger.info("User set minimum price for item.");
                         System.out.println("What is the maximum price you are looking for?");
                         BigDecimal f2 = scan.nextBigDecimal();
+                        logger.info("User set maximum price for item.");
                         Optional<List<Product>> pricedProduct = product.getByPrice(f1, f2);
                         if (pricedProduct.isPresent()) {
+                            logger.info("User viewed product within price range.");
                             learnMoreAboutProducts(scan, pricedProduct);
 
                         }
@@ -74,6 +83,8 @@ public class MainScreen implements IScreen {
                             case "1":
                                 System.out.println("Please input your category");
                                 String input3 = scan.nextLine();
+
+                                logger.info("User specified product category.");
                                 Optional<List<Product>> categoriedProduct = product.getByCategory(input3);
                                 if (categoriedProduct.isPresent()) {
                                     learnMoreAboutProducts(scan, categoriedProduct);
@@ -82,6 +93,7 @@ public class MainScreen implements IScreen {
                             case "2":
                                 System.out.println("Please input your name");
                                 String input4 = scan.nextLine();
+                                logger.info("User specified product name.");
                                 Optional<List<Product>> namedProduct = product.getByName(input4);
                                 if (namedProduct.isPresent()) {
                                     learnMoreAboutProducts(scan, namedProduct);
@@ -114,13 +126,10 @@ public class MainScreen implements IScreen {
             System.out.println("Press " + value + " to go back to the main menu");
             Integer choice = scan.nextInt();
             clearScreen();
-
             if (choice.equals(value)) {
                 break;
             }
-
             printOutFinerDetails(scan, choice, P);
-
         }
     }
 
@@ -146,6 +155,7 @@ public class MainScreen implements IScreen {
                     System.out.println(rr.getDescription());
                 }
             }
+            logger.info("User viewes ratings.");
             System.out.println("");
             System.out.println("Would you like to purchase this item? y/N");
             scan.nextLine();
@@ -189,6 +199,8 @@ public class MainScreen implements IScreen {
         while (true) {
             System.out.println("How many would you like to buy.");
             int numberOfProduct = scan.nextInt();
+
+            logger.info("User specified how much of product they wished to buy.");
             if (numberOfProduct > P.getStock()) {
                 System.out.println(
                         "You can not buy more than the current stock. We only have " + P.getStock() + " available.");
@@ -200,6 +212,7 @@ public class MainScreen implements IScreen {
                 Cart foundCart = cart.findCartByCartId(session.getCart_id());
                 foundCart.setTotal_cost(foundCart.getTotal_cost().add(totalCalculation));
                 cart.updateCart(foundCart);
+                logger.info("User added product to a cart.");
                 System.out.println("You have added " + numberOfProduct + " " + P.getName() + " to your cart.");
                 break;
             }

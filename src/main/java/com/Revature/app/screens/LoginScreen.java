@@ -10,6 +10,10 @@ import com.Revature.app.services.CartService;
 import com.Revature.app.services.RouterService;
 import com.Revature.app.services.UserService;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -18,9 +22,11 @@ public class LoginScreen implements IScreen {
     private RouterService router;
     private Session session;
     private CartService cartService;
+        private static final Logger logger = LogManager.getLogger(HomeScreen.class);
  
     @Override
     public void start(Scanner scan) {
+          logger.info("You have reached the login screen.");
         String username = "";
         String password = "";
 
@@ -57,7 +63,9 @@ public class LoginScreen implements IScreen {
                             System.out.println("Invalid username or password...");
                             System.out.print("\nPress enter to continue...");
                             scan.nextLine();
+                            logger.info("User did not put data in correctly");
                             break;
+                     
                         }
                         // find cart
                         Cart cart = cartService.findCartByUserId(foundUser.get().getId());
@@ -74,14 +82,17 @@ public class LoginScreen implements IScreen {
                         break exit;
                     case "n":
                         clearScreen();
+
                         System.out.println("Restarting process...");
                         System.out.print("\nPress enter to continue...");
+                        logger.info("User returns to the beggining of login");
                         scan.nextLine();
                         break;
                     default:
                         clearScreen();
                         System.out.println("Invalid option!");
                         System.out.print("\nPress enter to continue...");
+                        logger.info("User returns to the beggining of login");
                         scan.nextLine();
                         break;
                 }
@@ -111,7 +122,7 @@ public class LoginScreen implements IScreen {
 
             break;
         }
-
+        logger.info("User successfully in put username");
         return username;
     }
 
@@ -136,7 +147,7 @@ public class LoginScreen implements IScreen {
 
             break;
         }
-
+        logger.info("User successfully in put a password");
         return password;
     }
 
