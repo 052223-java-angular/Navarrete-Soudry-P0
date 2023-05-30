@@ -16,7 +16,6 @@ import com.Revature.app.models.Session;
 import com.Revature.app.services.CartService;
 import com.Revature.app.services.OrderService;
 import com.Revature.app.services.ProductsService;
-import com.Revature.app.services.RouterService;
 
 import lombok.AllArgsConstructor;
 
@@ -25,7 +24,6 @@ public class CartScreen implements IScreen {
     private final CartService cartService;
     private final OrderService orderService;
     private final ProductsService productsService;
-    private final RouterService router;
     private Session session;
 
     @Override
@@ -58,6 +56,7 @@ public class CartScreen implements IScreen {
                 // get option
                 System.out.print("\nChoose an option: ");
                 switch (scan.nextLine()) {
+                    // remove item
                     case "1":
                         while (true) {
                             // get cart item option
@@ -91,6 +90,7 @@ public class CartScreen implements IScreen {
                             break;
                         }
                         break;
+                    // change quantity
                     case "2":
                         while (true) {
                             // get cart item option
@@ -142,8 +142,8 @@ public class CartScreen implements IScreen {
                             break;
                         }
                         break;
+                    // checkout
                     case "3":
-                        // checkout
                         while (true) {
                             clearScreen();
                             System.out.println("Checking out...");
@@ -217,15 +217,10 @@ public class CartScreen implements IScreen {
                 System.out.println("Welcome to the cart " + session.getUsername() +
                         "!");
                 System.out.println("\nYou currently have nothing in your cart...");
-                System.out.println("\n[1] Continue shopping");
-                System.out.println("[x] Go back");
+                System.out.println("\n[x] Go back");
 
                 System.out.print("\nChoose an option: ");
                 switch (scan.nextLine()) {
-                    case "1":
-                        // navigate to product screen
-                        router.navigate("/home", scan);
-                        break exit;
                     case "x":
                         break exit;
                     default:

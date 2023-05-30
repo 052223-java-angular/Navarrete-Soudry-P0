@@ -9,7 +9,6 @@ import com.Revature.app.models.OrderItem;
 import com.Revature.app.models.Session;
 import com.Revature.app.services.OrderService;
 import com.Revature.app.services.ReviewService;
-
 import com.Revature.app.models.Review;
 
 import lombok.AllArgsConstructor;
@@ -40,6 +39,7 @@ public class OrderScreen implements IScreen {
 
                 // get option
                 switch (scan.nextLine()) {
+                    // view order
                     case "1":
                         while (true) {
                             clearScreen();
@@ -60,6 +60,7 @@ public class OrderScreen implements IScreen {
 
                                 // options
                                 System.out.println("\n[1] Leave a review");
+                                System.out.println("[2] Main Screen");
                                 System.out.println("[x] Go back");
                                 System.out.print("\nEnter option: ");
 
@@ -75,6 +76,8 @@ public class OrderScreen implements IScreen {
                                         // leave review
                                         leaveReview(orderItems.get(Integer.parseInt(orderItemOption) - 1), scan);
                                         continue;
+                                    case "2":
+                                        break exit;
                                     case "x":
                                         break;
                                     default:

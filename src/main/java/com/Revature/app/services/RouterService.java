@@ -31,7 +31,7 @@ public class RouterService {
                 new MainScreen(getProductsService(), this, getCartService(), getReviewService(), session).start(scan);
                 break;
             case "/cart":
-                new CartScreen(getCartService(), getOrderService(), getProductsService(), this, session).start(scan);
+                new CartScreen(getCartService(), getOrderService(), getProductsService(), session).start(scan);
                 break;
             case "/orders":
                 new OrderScreen(getOrderService(), getReviewService(), session).start(scan);
