@@ -17,6 +17,10 @@ import com.Revature.app.services.CartService;
 import com.Revature.app.services.OrderService;
 import com.Revature.app.services.ProductsService;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -25,9 +29,12 @@ public class CartScreen implements IScreen {
     private final OrderService orderService;
     private final ProductsService productsService;
     private Session session;
+    private static final Logger logger = LogManager.getLogger(CartScreen.class);
+
 
     @Override
     public void start(Scanner scan) {
+        logger.info("You have reached the Cart screen");
         Cart cart = cartService.findCartByCartId(session.getCart_id());
         List<CartItem> cartItems = cartService.findAllCartItemsByCartId(cart.getId());
         String itemOption = "";
@@ -84,6 +91,8 @@ public class CartScreen implements IScreen {
 
                             // successful removal
                             clearScreen();
+
+                            logger.info("User removed cart item");
                             System.out.println("Removal successful");
                             System.out.print("\nPress enter to continue...");
                             scan.nextLine();
@@ -139,6 +148,7 @@ public class CartScreen implements IScreen {
                             System.out.println("Update successful");
                             System.out.print("\nPress enter to continue...");
                             scan.nextLine();
+                            logger.info("User updated cart item.");
                             break;
                         }
                         break;
@@ -185,6 +195,7 @@ public class CartScreen implements IScreen {
                                     System.out.println("Your order was processed successfully!");
                                     System.out.print("\nEnter to continue...");
                                     scan.nextLine();
+                                    logger.info("User has checked out and processed the order successfully");
                                     break exit;
                                 case "n":
                                     break;

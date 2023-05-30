@@ -18,7 +18,7 @@ import com.Revature.app.screens.CartScreen;
 import com.Revature.app.screens.OrderScreen;
 
 
-public class RouterServiceTest {
+public class rs {
     @Mock
     private Scanner scanner;
     @Mock

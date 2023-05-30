@@ -2,6 +2,10 @@ package com.Revature.app.screens;
 
 import java.util.Scanner;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 import com.Revature.app.services.RouterService;
 
 import lombok.AllArgsConstructor;
@@ -9,9 +13,11 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 public class HomeScreen implements IScreen {
     private final RouterService router;
+    private static final Logger logger = LogManager.getLogger(HomeScreen.class);
 
     @Override
     public void start(Scanner scan) {
+        logger.info("You have reached the home screen.");
         String input = "";
 
         exit: {
@@ -28,9 +34,11 @@ public class HomeScreen implements IScreen {
                 switch (input.toLowerCase()) {
                     case "1":
                         router.navigate("/login", scan);
+                        logger.info("You have returned to the homescreen from login.");
                         break;
                     case "2":
                         router.navigate("/register", scan);
+                        logger.info("You have returned to the register from login.");
                         break;
                     case "x":
                         System.out.println("\nGoodbye!");

@@ -11,6 +11,9 @@ import com.Revature.app.services.OrderService;
 import com.Revature.app.services.ReviewService;
 import com.Revature.app.models.Review;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -18,9 +21,11 @@ public class OrderScreen implements IScreen {
     private final OrderService orderService;
     private final ReviewService reviewService;
     private Session session;
+    private static final Logger logger = LogManager.getLogger(CartScreen.class);
 
     @Override
     public void start(Scanner scan) {
+        logger.info("You have reached the order screen.");
         List<Order> orders = orderService.findAllOrdersByUserId(session.getId());
         String orderOption = "";
         String orderItemOption = "";
@@ -28,15 +33,12 @@ public class OrderScreen implements IScreen {
             while (true) {
                 clearScreen();
                 System.out.println("Welcome to your orders " + session.getUsername());
-
                 // show orders
                 showOrders(orders);
-
                 // options
                 System.out.println("\n[1] View order");
                 System.out.println("[x] Go back");
                 System.out.print("\nEnter option: ");
-
                 // get option
                 switch (scan.nextLine()) {
                     // view order
@@ -48,7 +50,6 @@ public class OrderScreen implements IScreen {
                             if (orderOption.equals("x")) {
                                 break;
                             }
-
                             List<OrderItem> orderItems = orderService
                                     .findAllOrderItemsByOrderId(
                                             orders.get(Integer.parseInt(orderOption) - 1).getId());
@@ -72,9 +73,9 @@ public class OrderScreen implements IScreen {
                                         if (orderItemOption.equals("x")) {
                                             continue;
                                         }
-
                                         // leave review
                                         leaveReview(orderItems.get(Integer.parseInt(orderItemOption) - 1), scan);
+                                    
                                         continue;
                                     case "2":
                                         break exit;
@@ -220,6 +221,7 @@ public class OrderScreen implements IScreen {
                 reviewService.sendAReview(new Review(value, value2, orderItem.getProduct_id(), session.getId()));
                 clearScreen();
                 System.out.println("Your review has been submitted!");
+                logger.info("User leaves a review on their product.");
                 System.out.print("\nPlease hit enter to return to viewing your order...");
                 scan.nextLine();
             } else {

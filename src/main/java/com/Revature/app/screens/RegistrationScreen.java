@@ -12,15 +12,21 @@ import com.Revature.app.models.Session;
 import com.Revature.app.models.User;
 import com.Revature.app.models.Cart;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+
 @AllArgsConstructor
 public class RegistrationScreen implements IScreen {
     public final UserService service;
     private final CartService cartService;
     public final RouterService router;
     private Session session;
+    private static final Logger logger = LogManager.getLogger(HomeScreen.class);
 
     @Override
     public void start(Scanner scan) {
+        logger.info("You have reached the home screen.");
         exit: {
             while (true) {
                 clearScreen();
