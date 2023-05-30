@@ -1,8 +1,7 @@
 package com.Revature.app.services;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import static org.mockito.Mockito.*;
@@ -10,100 +9,57 @@ import static org.mockito.Mockito.*;
 import java.util.Scanner;
 
 import com.Revature.app.models.Session;
+import com.Revature.app.screens.CartScreen;
 import com.Revature.app.screens.HomeScreen;
 import com.Revature.app.screens.LoginScreen;
-import com.Revature.app.screens.RegistrationScreen;
 import com.Revature.app.screens.MainScreen;
-import com.Revature.app.screens.CartScreen;
 import com.Revature.app.screens.OrderScreen;
-
+import com.Revature.app.screens.RegistrationScreen;
 
 public class RouterServiceTest {
-    @Mock
-    private Scanner scanner;
-    @Mock
-    private Session session;
+    private RouterService routerService = spy(new RouterService(new Session()));
 
-    private RouterService routerService;
-
-    @BeforeEach
-    void setUp() {
+    @Before
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
-        routerService  = new RouterService(session);
     }
 
     @Test
-    void homePathTest() {
-    // Arrange
-    String path = "/home";
-    HomeScreen homeScreenMock = mock(HomeScreen.class);
-    // Act
-    routerService.navigate(path, scanner);
-    verify(homeScreenMock, times(1)).start(scanner);
+    public void testNavigate() {
+        Scanner scan = new Scanner(System.in);
+        HomeScreen homeScreen = mock(HomeScreen.class);
+        LoginScreen loginScreen = mock(LoginScreen.class);
+        RegistrationScreen registrationScreen = mock(RegistrationScreen.class);
+        MainScreen mainScreen = mock(MainScreen.class);
+        CartScreen cartScreen = mock(CartScreen.class);
+        OrderScreen orderScreen = mock(OrderScreen.class);
+
+        doNothing().when(homeScreen).start(scan);
+        doNothing().when(loginScreen).start(scan);
+        doNothing().when(registrationScreen).start(scan);
+        doNothing().when(mainScreen).start(scan);
+        doNothing().when(cartScreen).start(scan);
+        doNothing().when(orderScreen).start(scan);
+
+        doReturn(homeScreen).when(routerService).getHomeScreen(any(Scanner.class));
+        doReturn(loginScreen).when(routerService).getLoginScreen(any(Scanner.class));
+        doReturn(registrationScreen).when(routerService).getRegistrationScreen(any(Scanner.class));
+        doReturn(mainScreen).when(routerService).getMainScreen(any(Scanner.class));
+        doReturn(cartScreen).when(routerService).getCartScreen(any(Scanner.class));
+        doReturn(orderScreen).when(routerService).getOrderScreen(any(Scanner.class));
+
+        routerService.navigate("/home", scan);
+        routerService.navigate("/login", scan);
+        routerService.navigate("/register", scan);
+        routerService.navigate("/mainApp", scan);
+        routerService.navigate("/cart", scan);
+        routerService.navigate("/orders", scan);
+
+        verify(homeScreen, times(1)).start(scan);
+        verify(loginScreen, times(1)).start(scan);
+        verify(registrationScreen, times(1)).start(scan);
+        verify(mainScreen, times(1)).start(scan);
+        verify(cartScreen, times(1)).start(scan);
+        verify(orderScreen, times(1)).start(scan);
     }
-
-    @Test
-    void loginPathTest() {
-    // Arrange
-    String path = "/login";
-    LoginScreen loginScreenMock = mock(LoginScreen.class);
-    // Act
-    routerService.navigate(path, scanner);
-    verify(loginScreenMock, times(1)).start(scanner);
-    }
-
-    @Test
-    void registrationPathTest() {
-        // Arrange
-        String path = "/register";
-        RegistrationScreen registrationScreenMock = mock(RegistrationScreen.class);
-    
-        // Act
-        routerService.navigate(path, scanner);
-    
-        // Assert
-        verify(registrationScreenMock, times(1)).start(scanner);
-    }
-
-    @Test
-void mainAppPathTest() {
-    // Arrange
-    String path = "/mainApp";
-    MainScreen mainScreenMock = mock(MainScreen.class);
-
-    // Act
-    routerService.navigate(path, scanner);
-
-    // Assert
-    verify(mainScreenMock, times(1)).start(scanner);
-}
-
-@Test
-void cartPathTest() {
-    // Arrange
-    String path = "/cart";
-    CartScreen cartScreenMock = mock(CartScreen.class);
-
-    // Act
-    routerService.navigate(path, scanner);
-
-    // Assert
-    verify(cartScreenMock, times(1)).start(scanner);
-}
-@Test
-void ordersPathTest() {
-    // Arrange
-    String path = "/orders";
-    OrderScreen orderScreenMock = mock(OrderScreen.class);
-
-    // Act
-    routerService.navigate(path, scanner);
-
-    // Assert
-    verify(orderScreenMock, times(1)).start(scanner);
-}
-
-
-
-    
 }

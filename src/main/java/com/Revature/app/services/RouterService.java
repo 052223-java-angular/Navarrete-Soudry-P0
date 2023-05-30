@@ -11,34 +11,60 @@ import com.Revature.app.daos.UserDAO;
 import com.Revature.app.screens.*;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
+@NoArgsConstructor
 public class RouterService {
     private Session session;
 
     public void navigate(String path, Scanner scan) {
         switch (path) {
             case "/home":
-                new HomeScreen(this).start(scan);
+                getHomeScreen(scan).start(scan);
                 break;
             case "/login":
-                new LoginScreen(getUserService(), this, session, getCartService()).start(scan);
+                getLoginScreen(scan).start(scan);
                 break;
             case "/register":
-                new RegistrationScreen(getUserService(), getCartService(), this, session).start(scan);
+                getRegistrationScreen(scan).start(scan);
                 break;
             case "/mainApp":
-                new MainScreen(getProductsService(), this, getCartService(), getReviewService(), session).start(scan);
+                getMainScreen(scan).start(scan);
                 break;
             case "/cart":
-                new CartScreen(getCartService(), getOrderService(), getProductsService(), session).start(scan);
+                getCartScreen(scan).start(scan);
                 break;
             case "/orders":
-                new OrderScreen(getOrderService(), getReviewService(), session).start(scan);
+                getOrderScreen(scan).start(scan);
                 break;
             default:
                 break;
         }
+    }
+
+    public HomeScreen getHomeScreen(Scanner scan) {
+        return new HomeScreen(this);
+    }
+
+    public LoginScreen getLoginScreen(Scanner scan) {
+        return new LoginScreen(getUserService(), this, session, getCartService());
+    }
+
+    public RegistrationScreen getRegistrationScreen(Scanner scan) {
+        return new RegistrationScreen(getUserService(), getCartService(), this, session);
+    }
+
+    public MainScreen getMainScreen(Scanner scan) {
+        return new MainScreen(getProductsService(), this, getCartService(), getReviewService(), session);
+    }
+
+    public CartScreen getCartScreen(Scanner scan) {
+        return new CartScreen(getCartService(), getOrderService(), getProductsService(), session);
+    }
+
+    public OrderScreen getOrderScreen(Scanner scan) {
+        return new OrderScreen(getOrderService(), getReviewService(), session);
     }
 
     /* ----------------- Helper Methods -------------------- */
