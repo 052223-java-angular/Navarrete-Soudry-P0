@@ -20,4 +20,6 @@ INSERT INTO products (id, name, description, price, stock, category_id) VALUES
     ('10', 'Dress', 'Elegant dress for special occasions', 59.99, 20, '2'),
     ('11', 'Wall Clock', 'Classic wall clock for home or office', 24.99, 10, '3'),
     ('12', 'Non-Fiction Book', 'Informative non-fiction book on a popular topic', 19.99, 15, '4'),
-    ('13', 'Soccer Ball', 'Durable soccer ball for practice and matches', 19.99, 25, '5');
+    ('13', 'Soccer Ball', 'Durable soccer ball for practice and matches', 19.99, 25, '5'),
+    (14, 'Sony Product 1', 'Description of Sony Product 1', 9.99, 100, 1),
+(15, 'Sony Product 2', 'Description of Sony Product 2', 19.99, 50, 1);

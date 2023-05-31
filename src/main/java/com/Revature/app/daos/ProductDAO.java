@@ -106,9 +106,10 @@ public class ProductDAO {
     public Optional<List<Product>> searchByCategory(String qualifier) {
         try (Connection conn = ConnectionFactory.getInstance().getConnection()) {
             String sql = "SELECT products.*, categories.name FROM products, categories WHERE products.category_id = categories.id AND categories.name = ?;";
-
+            // String sql = "SELECT products.*, categories.name FROM products, categories WHERE products.category_id = categories.id AND categories.name = ? OR categories.name LIKE ? ;";
             try (PreparedStatement ps = conn.prepareStatement(sql)) {
                 ps.setString(1, qualifier);
+                // ps.setString(2, "%" + qualifier + "%");
 
                 List<Product> p1 = new ArrayList<>();
                 try (ResultSet rs = ps.executeQuery()) {

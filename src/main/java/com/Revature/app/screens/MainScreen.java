@@ -59,6 +59,7 @@ public class MainScreen implements IScreen {
                         if (p1.isPresent()) {
                             learnMoreAboutProducts(scan, p1);
                         }
+                        clearScreen();
                         break;
                     case "2":
                         System.out.println("What is the minimum price you are looking for?");
@@ -82,19 +83,21 @@ public class MainScreen implements IScreen {
                         switch (input2.toLowerCase()) {
                             case "1":
                                 System.out.println("Please input your category");
-                                String input3 = scan.nextLine();
+                                String input3 = scan.nextLine().toLowerCase();
 
+                                String finalInput = fixInput(input3);
                                 logger.info("User specified product category.");
-                                Optional<List<Product>> categoriedProduct = product.getByCategory(input3);
+                                Optional<List<Product>> categoriedProduct = product.getByCategory(finalInput);
                                 if (categoriedProduct.isPresent()) {
                                     learnMoreAboutProducts(scan, categoriedProduct);
                                 }
                                 break;
                             case "2":
                                 System.out.println("Please input your name");
-                                String input4 = scan.nextLine();
+                                String input4 = scan.nextLine().toLowerCase();
+                                String finalInput2 = fixInput(input4);
                                 logger.info("User specified product name.");
-                                Optional<List<Product>> namedProduct = product.getByName(input4);
+                                Optional<List<Product>> namedProduct = product.getByName(finalInput2);
                                 if (namedProduct.isPresent()) {
                                     learnMoreAboutProducts(scan, namedProduct);
                                 }
@@ -117,21 +120,47 @@ public class MainScreen implements IScreen {
     }
     /* ------------------ Helper Methods ---------------- */
 
+    // private void learnMoreAboutProducts(Scanner scan, Optional<List<Product>> p) {
+    //     clearScreen();
+    //     List<Product> P = new ArrayList<>(p.get());
+    //     while (true) {
+    //         clearScreen();
+    //         listOutProduct(P);
+    //         Integer value = P.size() + 1;
+    //         System.out.println("");
+    //         System.out.println("Press " + value + " to go back to the main menu");
+    //         Integer choice = scan.nextInt();
+    //         clearScreen();
+    //         if (choice.equals(value)) {
+    //             break;
+    //         }
+    //         printOutFinerDetails(scan, choice, P);
+    //     }
+    // }
+
+
     private void learnMoreAboutProducts(Scanner scan, Optional<List<Product>> p) {
         clearScreen();
-        List<Product> P = new ArrayList<>(p.get());
-        while (true) {
-            listOutProduct(P);
-            Integer value = P.size() + 1;
-            System.out.println("Press " + value + " to go back to the main menu");
-            Integer choice = scan.nextInt();
-            clearScreen();
-            if (choice.equals(value)) {
-                break;
+        if (p.isPresent() && !p.get().isEmpty()) {
+            List<Product> P = p.get();
+            while (true) {
+                clearScreen();
+                listOutProduct(P);
+                int value = P.size();
+                System.out.println("");
+                System.out.println("Press " + value + " to go back to the main menu");
+                int choice = scan.nextInt();
+                clearScreen();
+                if (choice == value) {
+                    break;
+                }
+                printOutFinerDetails(scan, choice, P);
             }
-            printOutFinerDetails(scan, choice, P);
+        } else {
+            System.out.println("No products available.");
         }
     }
+    
 
     private void printOutFinerDetails(Scanner scan, Integer counter, List<Product> P) {
         if (counter.equals(P.size())) {
@@ -172,22 +201,29 @@ public class MainScreen implements IScreen {
     }
 
     public void listOutProduct(List<Product> P) {
+          clearScreen();
         if (!new ArrayList<>(P).isEmpty()) {
+        
             System.out.println("The Products we have for sale.");
+            System.out.println("");
             System.out.print("Name ");
             System.out.print("Price ");
             System.out.print("Stock ");
-            System.out.println("Category ");
+            System.out.println("");
+            System.out.println("");
+         
             for (Product product : P) {
                 System.out.print(product.getName() + " ");
                 System.out.print(product.getPrice() + " ");
-                System.out.print(product.getStock() + " ");
-                System.out.println(product.getCategory_id() + " ");
+                System.out.println(product.getStock() + " ");
+    
             }
             System.out.println("");
             for (int i = 0; i < P.size(); i++) {
                 System.out.println("Press " + i + " to get more info on " + P.get(i).getName());
             }
+            System.out.println("");
+            
             System.out.println("Press " + P.size() + " to purchase one of thise items.");
         } else {
             System.out.println("I'm sorry but there no products with the criteria you listed.");
@@ -223,6 +259,13 @@ public class MainScreen implements IScreen {
         clearScreen();
     }
 
+    private String fixInput(String input3) {
+        String part1 = input3.substring(0, 1).toUpperCase(); // "c"
+        String part2 = input3.substring(1);
+        return part1 + part2;
+
+    }
+    
     private void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
