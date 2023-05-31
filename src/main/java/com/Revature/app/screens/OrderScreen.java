@@ -220,7 +220,7 @@ public class OrderScreen implements IScreen {
             System.out.println("Welcome to Review screen");
 
             System.out.println("\nWhat out of 5 would you rate this product");
-            System.out.print("\nEnter rating: ");
+            System.out.print("\nEnter rating");
             input = scan.nextLine();
             if (!isValidNumber(input) || Integer.parseInt(input) < 0 || Integer.parseInt(input) > 5) {
                 clearScreen();
@@ -235,7 +235,9 @@ public class OrderScreen implements IScreen {
             System.out.print("\nEnter description: ");
             String value2 = scan.nextLine();
 
-            System.out.println("\nPlease confirm your information is correct: " + orderItem.getName());
+            System.out.println("\nPlease confirm your information is correct:");
+            System.out.println("");
+            System.out.println(orderItem.getName());
             System.out.println("\nRating: " + value);
             System.out.println("Description: " + value2);
             System.out.print("\nEnter (y/n): ");
