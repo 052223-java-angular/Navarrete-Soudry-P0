@@ -220,8 +220,12 @@ public class OrderScreen implements IScreen {
             System.out.println("Welcome to Review screen");
 
             System.out.println("\nWhat out of 5 would you rate this product");
-            System.out.print("\nEnter rating: ");
+            System.out.print("\nEnter rating (x to cancel): ");
             input = scan.nextLine();
+            if (input.equals("x")) {
+                break;
+            }
+
             if (!isValidNumber(input) || Integer.parseInt(input) < 0 || Integer.parseInt(input) > 5) {
                 clearScreen();
                 System.out.println("Input is invalid: must be a number between 0 and 5");
@@ -232,8 +236,11 @@ public class OrderScreen implements IScreen {
             int value = Integer.parseInt(input);
 
             System.out.println("\nPlease describe your opinion of the product");
-            System.out.print("\nEnter description: ");
+            System.out.print("\nEnter description (x to cancel): ");
             String value2 = scan.nextLine();
+            if (value2.equals("x")) {
+                break;
+            }
 
             System.out.println("\nPlease confirm your information is correct: " + orderItem.getName());
             System.out.println("\nRating: " + value);
