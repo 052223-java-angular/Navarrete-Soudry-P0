@@ -17,5 +17,6 @@ public class App {
         router.navigate("/home", scan);
         scan.close();
         logger.info("-------------------End Application----------------");
+        logger.info("");
     }
 }
