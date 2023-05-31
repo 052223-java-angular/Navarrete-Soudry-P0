@@ -15,7 +15,6 @@ import com.Revature.app.models.Cart;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
 @AllArgsConstructor
 public class RegistrationScreen implements IScreen {
     public final UserService service;
@@ -34,7 +33,13 @@ public class RegistrationScreen implements IScreen {
                 String username = "";
                 String password = "";
                 username = getUsername(scan, username);
+                if (username.equals("x")) {
+                    break exit;
+                }
                 password = getPassword(scan, username, password);
+                if (password.equals("x")) {
+                    break exit;
+                }
                 clearScreen();
                 System.out.println("Please confirm your credentials:");
                 System.out.println("\nUsername: " + username);

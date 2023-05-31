@@ -20,7 +20,6 @@ import com.Revature.app.services.ProductsService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -30,7 +29,6 @@ public class CartScreen implements IScreen {
     private final ProductsService productsService;
     private Session session;
     private static final Logger logger = LogManager.getLogger(CartScreen.class);
-
 
     @Override
     public void start(Scanner scan) {
@@ -159,7 +157,7 @@ public class CartScreen implements IScreen {
                             System.out.println("Checking out...");
                             showCartItems(cartItems);
                             System.out.println("\n------------------------------------------------------------------");
-                            System.out.println("\nTotal price: " + cart.getTotal_cost());
+                            System.out.println("\nTotal price: $" + cart.getTotal_cost());
                             System.out.print("\nContinue with purchase (y/n): ");
 
                             switch (scan.nextLine()) {
