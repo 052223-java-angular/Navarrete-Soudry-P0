@@ -1,4 +1,4 @@
-package com.Revature.app.services;
+package com.Revature.app.Services;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -19,6 +19,8 @@ import org.mockito.MockitoAnnotations;
 import com.Revature.app.daos.CartDAO;
 import com.Revature.app.models.Cart;
 import com.Revature.app.models.CartItem;
+
+import com.Revature.app.services.CartService;
 
 public class CartServiceTest {
 

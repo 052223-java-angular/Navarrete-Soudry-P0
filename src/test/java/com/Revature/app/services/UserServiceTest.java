@@ -1,4 +1,4 @@
-package com.Revature.app.services;
+package com.Revature.app.Services;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -19,6 +19,8 @@ import org.mockito.MockitoAnnotations;
 
 import com.Revature.app.daos.UserDAO;
 import com.Revature.app.models.User;
+
+import com.Revature.app.services.UserService;
 
 public class UserServiceTest {
     @Mock

@@ -1,4 +1,4 @@
-package com.Revature.app.services;
+package com.Revature.app.Services;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -20,6 +20,8 @@ import org.mockito.MockitoAnnotations;
 import com.Revature.app.daos.OrderDAO;
 import com.Revature.app.models.Order;
 import com.Revature.app.models.OrderItem;
+
+import com.Revature.app.services.OrderService;
 
 public class OrderServiceTest {
     @Mock
