@@ -242,7 +242,9 @@ public class OrderScreen implements IScreen {
                 break;
             }
 
-            System.out.println("\nPlease confirm your information is correct: " + orderItem.getName());
+            System.out.println("\nPlease confirm your information is correct:");
+            System.out.println("");
+            System.out.println(orderItem.getName());
             System.out.println("\nRating: " + value);
             System.out.println("Description: " + value2);
             System.out.print("\nEnter (y/n): ");
