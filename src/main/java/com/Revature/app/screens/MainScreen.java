@@ -123,6 +123,7 @@ public class MainScreen implements IScreen {
         while (true) {
             listOutProduct(P);
             Integer value = P.size() + 1;
+            System.out.println("");
             System.out.println("Press " + value + " to go back to the main menu");
             Integer choice = scan.nextInt();
             clearScreen();
@@ -145,15 +146,22 @@ public class MainScreen implements IScreen {
             Optional<List<Review>> reviews = review.getReview(name);
 
             System.out.println(P.get(counter).getName());
+            System.out.println("");
+            System.out.println("Item Description");
             System.out.println(P.get(counter).getDescription());
 
             if (reviews.isPresent()) {
                 List<Review> r2 = new ArrayList<>(reviews.get());
-                System.out.println("Rating Rating Description");
+                System.out.println("");
+                System.out.println("Reviews");
+                if (!r2.isEmpty()) {
                 for (Review rr : r2) {
                     System.out.print(rr.getRating() + " ");
                     System.out.println(rr.getDescription());
                 }
+            } else {
+                System.out.println("This prouct has no reviews yet.");
+            }
             }
             logger.info("User viewes ratings.");
             System.out.println("");
@@ -176,8 +184,8 @@ public class MainScreen implements IScreen {
             System.out.println("The Products we have for sale.");
             System.out.print("Name ");
             System.out.print("Price ");
-            System.out.print("Stock ");
-            System.out.println("Category ");
+            System.out.println("Stock ");
+            System.out.println("");
             for (Product product : P) {
                 System.out.print(product.getName() + " ");
                 System.out.print(product.getPrice() + " ");
@@ -188,6 +196,7 @@ public class MainScreen implements IScreen {
             for (int i = 0; i < P.size(); i++) {
                 System.out.println("Press " + i + " to get more info on " + P.get(i).getName());
             }
+            System.out.println("");
             System.out.println("Press " + P.size() + " to purchase one of thise items.");
         } else {
             System.out.println("I'm sorry but there no products with the criteria you listed.");
@@ -204,25 +213,27 @@ public class MainScreen implements IScreen {
             if (numberOfProduct > P.getStock()) {
                 System.out.println(
                         "You can not buy more than the current stock. We only have " + P.getStock() + " available.");
+            } else if(numberOfProduct <= 0) {
+                System.out.println("You cannot add a number less than one.");
+                System.out.println("");
             } else {
                 BigDecimal totalCalculation = new BigDecimal(String.valueOf(numberOfProduct)).multiply(P.getPrice());
-                CartItem cartItem = new CartItem(P.getName(), P.getStock(), numberOfProduct, totalCalculation,
-                        session.getCart_id(), P.getId());
-                cart.createCartItem(cartItem);
-                Cart foundCart = cart.findCartByCartId(session.getCart_id());
-                foundCart.setTotal_cost(foundCart.getTotal_cost().add(totalCalculation));
-                cart.updateCart(foundCart);
-                logger.info("User added product to a cart.");
-                System.out.println("You have added " + numberOfProduct + " " + P.getName() + " to your cart.");
+                    CartItem cartItem = new CartItem(P.getName(), P.getStock(), numberOfProduct, totalCalculation,
+                    session.getCart_id(), P.getId());
+                    cart.createCartItem(cartItem);
+                    Cart foundCart = cart.findCartByCartId(session.getCart_id());
+                    foundCart.setTotal_cost(foundCart.getTotal_cost().add(totalCalculation));
+                    cart.updateCart(foundCart);
+                    logger.info("User added product to a cart.");
+                    System.out.println("You have added " + numberOfProduct + " " + P.getName() + " to your cart.");
+            }
                 break;
             }
+            scan.nextLine();
+            System.out.println("Please hit enter to be return to your previous item query.");
+            scan.nextLine();
+            clearScreen();
         }
-        scan.nextLine();
-        System.out.println("Please hit enter to be return to your previous item query.");
-        scan.nextLine();
-        clearScreen();
-    }
-
     private void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
