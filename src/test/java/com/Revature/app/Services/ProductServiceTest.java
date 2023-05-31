@@ -1,4 +1,4 @@
-package com.Revature.app.services;
+package com.Revature.app.Services;
 
 import org.junit.Test;
 import org.mockito.Mock;
@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 
 import static org.mockito.Mockito.*;
+import com.Revature.app.services.ProductsService;
 
 public class ProductServiceTest {
 

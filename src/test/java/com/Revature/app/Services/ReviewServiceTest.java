@@ -1,4 +1,4 @@
-package com.Revature.app.services;
+package com.Revature.app.Services;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,6 +16,8 @@ import com.Revature.app.models.Review;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
+
+import com.Revature.app.services.ReviewService;
 
 @RunWith(MockitoJUnitRunner.class)
 public class ReviewServiceTest {
