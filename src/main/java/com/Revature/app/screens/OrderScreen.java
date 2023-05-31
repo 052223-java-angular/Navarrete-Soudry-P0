@@ -30,6 +30,10 @@ public class OrderScreen implements IScreen {
         String orderOption = "";
         String orderItemOption = "";
         exit: {
+            if (orders.isEmpty()) {
+                orderIsEmptyScreen(scan);
+                break exit;
+            }
             while (true) {
                 clearScreen();
                 System.out.println("Welcome to your orders " + session.getUsername());
@@ -75,7 +79,7 @@ public class OrderScreen implements IScreen {
                                         }
                                         // leave review
                                         leaveReview(orderItems.get(Integer.parseInt(orderItemOption) - 1), scan);
-                                    
+
                                         continue;
                                     case "2":
                                         break exit;
@@ -101,6 +105,26 @@ public class OrderScreen implements IScreen {
     private void clearScreen() {
         System.out.print("\033[H\033[2J");
         System.out.flush();
+    }
+
+    public void orderIsEmptyScreen(Scanner scan) {
+        exit: {
+            while (true) {
+                clearScreen();
+                System.out.println("Welcome to your orders " + session.getUsername() +
+                        "!");
+                System.out.println("\nYou currently have no orders...");
+                System.out.println("\n[x] Go back");
+
+                System.out.print("\nChoose an option: ");
+                switch (scan.nextLine()) {
+                    case "x":
+                        break exit;
+                    default:
+                        break;
+                }
+            }
+        }
     }
 
     private void showOrders(List<Order> orders) {
