@@ -189,8 +189,7 @@ public class MainScreen implements IScreen {
             for (Product product : P) {
                 System.out.print(product.getName() + " ");
                 System.out.print(product.getPrice() + " ");
-                System.out.print(product.getStock() + " ");
-                System.out.println(product.getCategory_id() + " ");
+                System.out.println(product.getStock() + " ");
             }
             System.out.println("");
             for (int i = 0; i < P.size(); i++) {
