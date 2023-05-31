@@ -1,10 +1,10 @@
 -- Inserting data into the categories table
 INSERT INTO categories (id, name) VALUES
-    ('1', 'Electronics'),
-    ('2', 'Clothing'),
-    ('3', 'Home Decor'),
-    ('4', 'Books'),
-    ('5', 'Sports');
+    ('1', 'electronics'),
+    ('2', 'clothing'),
+    ('3', 'home decor'),
+    ('4', 'books'),
+    ('5', 'sports');
 
 -- Inserting data into the products table
 INSERT INTO products (id, name, description, price, stock, category_id) VALUES
